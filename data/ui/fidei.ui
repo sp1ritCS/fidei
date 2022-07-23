@@ -6,7 +6,11 @@
 				<property name="orientation">vertical</property>
 				<child>
 					<object class="AdwHeaderBar">
-						<!-- TODO -->
+						<property name="title-widget">
+							<object class="AdwWindowTitle" id="title">
+								<property name="title">Fidei</property>
+							</object>
+						</property>
 					</object>
 				</child>
 				<child>

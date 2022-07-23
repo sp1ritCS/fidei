@@ -25,6 +25,7 @@ typedef struct {
 	gint active_booknum;
 	gint active_chapter;
 
+	AdwWindowTitle* title;
 	// parent
 	GtkStack* initializer_stack;
 
@@ -106,6 +107,7 @@ void fidei_appwindow_class_init(FideiAppWindowClass* class) {
 	g_object_class_install_properties(object_class, N_PROPERTIES, obj_properties);
 
 	gtk_widget_class_set_template_from_resource(widget_class, "/arpa/sp1rit/Fidei/ui/fidei.ui");
+	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, title);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, initializer_stack);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, bible_selector);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, browser_btn);
@@ -257,12 +259,14 @@ static GtkWidget* create_picker_item(const gchar* title, const gchar* lang, cons
 
 	GtkWidget* titlew = gtk_label_new(title);
 	gtk_widget_add_css_class(titlew, "title");
+	gtk_label_set_single_line_mode(GTK_LABEL(titlew), TRUE);
 	gtk_label_set_xalign(GTK_LABEL(titlew), 0.f);
 
 	gchar* subtitle = g_strdup_printf("%s | %s", lang, publisher);
 	GtkWidget* subtitlew = gtk_label_new(subtitle);
 	g_free(subtitle);
 	gtk_widget_add_css_class(subtitlew, "subtitle");
+	gtk_label_set_single_line_mode(GTK_LABEL(subtitlew), TRUE);
 	gtk_label_set_xalign(GTK_LABEL(subtitlew), 0.f);
 
 	gtk_box_append(GTK_BOX(titlebox), titlew);
@@ -373,6 +377,11 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	gchar** verses = fidei_bible_read_chapter(priv->active_bible, book, chapter);
 	GtkWidget* chapterview = create_chapter_content_view(verses);
 	g_strfreev(verses);
+
+	gchar* title = g_strdup_printf("%s %d", fidei_biblebook_get_bname(priv->active_biblebook), chapter+1);
+	adw_window_title_set_title(priv->title, title);
+	adw_window_title_set_subtitle(priv->title, fidei_bible_get_title(priv->active_bible));
+	g_free(title);
 
 	gtk_widget_set_visible(GTK_WIDGET(priv->content_actions), TRUE);
 	gtk_scrolled_window_set_child(priv->content, chapterview);
