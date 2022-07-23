@@ -151,46 +151,76 @@ FideiBible* fidei_bible_new(const gchar* path) {
 	return g_object_new(FIDEI_TYPE_BIBLE, "path", path, NULL);
 }
 
+static gboolean fidei_bible_navigate_to_xmlbible(xmlTextReaderPtr reader) {
+	gint ret;
+
+	ret = xmlTextReaderRead(reader);
+	while (ret == 1) {
+		const xmlChar* name = xmlTextReaderConstName(reader);
+		if (g_strcmp0((gchar*)name, "XMLBIBLE") == 0) {
+			ret = xmlTextReaderRead(reader);
+			return TRUE;
+		}
+		ret = xmlTextReaderRead(reader);
+	}
+	return FALSE;
+}
+
 static void fidei_bible_parse_info(FideiBible* self) {
 	FideiBiblePrivate* priv = fidei_bible_get_instance_private(self);
 
 	xmlTextReaderPtr reader = xmlReaderForFile(priv->path, NULL, 0);
-	gint ret;
-	ret = xmlTextReaderRead(reader);
+	gint ret = 1;
+
+	if (fidei_bible_navigate_to_xmlbible(reader))
+		goto found_xmlbible;
+	else
+		goto out;
+
+found_xmlbible:
 	while (ret == 1) {
 		const xmlChar* name = xmlTextReaderConstName(reader);
-		if (g_strcmp0((gchar*)name, "INFORMATION") == 0) {
-			xmlNodePtr info = xmlTextReaderExpand(reader);
+		if (g_strcmp0((gchar*)name, "INFORMATION") == 0)
+			goto found_information;
+		else if (g_strcmp0((gchar*)name, "BIBLEBOOK") == 0)
+			goto out;
 
-			xmlNodePtr cur = info->children;
-			while (cur) {
-				switch (g_str_hash(cur->name)) {
-					case 0x106daa27:
-						priv->title = xmlNodeGetContent(cur);
-						break;
-					case 0x5e099013:
-						priv->publisher = xmlNodeGetContent(cur);
-						break;
-					case 0x5a6b41c9:
-						priv->lang = xmlNodeGetContent(cur);
-						break;
-					case 0xbe5ad288:
-						priv->identifier = xmlNodeGetContent(cur);
-						break;
-					case 0x19716e36:
-						priv->rights = xmlNodeGetContent(cur);
-					default:
-						(void)0;
-				}
-
-				cur = cur->next;
-			}
-
-			break;
-		}
 		ret = xmlTextReaderRead(reader);
 	}
 
+found_information: {
+	xmlNodePtr info = xmlTextReaderExpand(reader);
+
+	xmlNodePtr cur = info->children;
+	while (cur) {
+		switch (g_str_hash(cur->name)) {
+			case 0x106daa27:
+				priv->title = xmlNodeGetContent(cur);
+				break;
+			case 0x5e099013:
+				priv->publisher = xmlNodeGetContent(cur);
+				break;
+			case 0x5a6b41c9:
+				priv->lang = xmlNodeGetContent(cur);
+				break;
+			case 0xbe5ad288:
+				priv->identifier = xmlNodeGetContent(cur);
+				break;
+			case 0x19716e36:
+				priv->rights = xmlNodeGetContent(cur);
+			default:
+				(void)0;
+		}
+
+		cur = cur->next;
+	}
+
+	ret = xmlTextReaderNext(priv->reader);
+
+
+/**/}
+
+out:
 	priv->reader = reader;
 }
 
@@ -241,9 +271,7 @@ GListStore* fidei_bible_read_books(FideiBible* self) {
 	if (priv->reader) {
 		GListStore* books = g_list_store_new(FIDEI_TYPE_BIBLEBOOK);
 
-		gint ret;
-		ret = xmlTextReaderNext(priv->reader);
-		ret = xmlTextReaderRead(priv->reader);
+		gint ret = 1;
 		while (ret == 1) {
 			const xmlChar* name = xmlTextReaderConstName(priv->reader);
 			if (g_strcmp0((gchar*)name, "BIBLEBOOK") == 0) {
@@ -253,15 +281,14 @@ GListStore* fidei_bible_read_books(FideiBible* self) {
 
 				gint cret;
 				cret = xmlTextReaderRead(priv->reader);
-				cret = xmlTextReaderRead(priv->reader);
 				while (cret == 1) {
 					const xmlChar* name = xmlTextReaderConstName(priv->reader);
-					if (g_strcmp0((gchar*)name, "CHAPTER") != 0)
+					if (g_strcmp0((gchar*)name, "CHAPTER") == 0)
+						num_chapters++;
+					else if (g_strcmp0((gchar*)name, "#text") != 0)
 						break;
-					num_chapters++;
 
-					ret = xmlTextReaderNext(priv->reader);
-					ret = xmlTextReaderRead(priv->reader);
+					cret = xmlTextReaderNext(priv->reader);
 				}
 
 				FideiBibleBook* book = fidei_biblebook_new(bname, bsname, num_chapters);
@@ -270,8 +297,7 @@ GListStore* fidei_bible_read_books(FideiBible* self) {
 			}
 
 			ret = xmlTextReaderNext(priv->reader);
-			ret = xmlTextReaderRead(priv->reader);
-		}
+		};
 
 		priv->books = books;
 		xmlFreeTextReader(g_steal_pointer(&priv->reader));
@@ -287,68 +313,69 @@ gchar** fidei_bible_read_chapter(FideiBible* self, gint book, gint chapter) {
 	g_return_val_if_fail((book | chapter) >= 0, NULL);
 	FideiBiblePrivate* priv = fidei_bible_get_instance_private(self);
 
+	gchar** verses = NULL;
 	gint seen_books = -1;
+	gint seen_chapters = -1;
 
 	xmlTextReaderPtr reader = xmlReaderForFile(priv->path, NULL, 0);
-	gint ret;
-	ret = xmlTextReaderRead(reader);
-	ret = xmlTextReaderRead(reader);
-	ret = xmlTextReaderNext(reader);
+	gint ret = 1;
 
+	if (fidei_bible_navigate_to_xmlbible(reader))
+		goto found_xmlbible;
+	else
+		goto out;
+
+found_xmlbible:
 	while (ret == 1) {
 		const xmlChar* name = xmlTextReaderConstName(reader);
 		if (g_strcmp0((gchar*)name, "BIBLEBOOK") == 0)
 			seen_books++;
 
 		if (seen_books == book) {
-			gint seen_chapters = -1;
-
-			gint cret;
-			cret = xmlTextReaderRead(reader);
-			cret = xmlTextReaderRead(reader);
-			while (cret == 1) {
-				const xmlChar* name = xmlTextReaderConstName(reader);
-				if (g_strcmp0((gchar*)name, "CHAPTER") == 0)
-					seen_chapters++;
-
-				if (seen_chapters == chapter) {
-					xmlNodePtr chapternode = xmlTextReaderExpand(reader);
-					guint num_vers = 0;
-					xmlNodePtr cur = chapternode->children;
-					while (cur) {
-						if (g_strcmp0((gchar*)cur->name, "VERS") == 0)
-							num_vers++;
-						cur = cur->next;
-					}
-
-					gchar** verses = g_new(gchar*, num_vers+1);
-					cur = chapternode->children;
-					gint i = 0;
-					while (cur) {
-						if (g_strcmp0((gchar*)cur->name, "VERS") == 0) {
-							verses[i] = (gchar*)xmlNodeGetContent(cur);
-							i++;
-						}
-						cur = cur->next;
-					}
-					verses[num_vers] = 0x0;
-
-					xmlFreeTextReader(reader);
-					return verses;
-				}
-
-				cret = xmlTextReaderNext(reader);
-				cret = xmlTextReaderRead(reader);
-			}
-
-			xmlFreeTextReader(reader);
-			return NULL;
+			ret = xmlTextReaderRead(reader);
+			goto found_book;
 		}
 
 		ret = xmlTextReaderNext(reader);
-		ret = xmlTextReaderRead(reader);
+	}
+	goto out;
+
+found_book:
+	while (ret == 1) {
+		const xmlChar* name = xmlTextReaderConstName(reader);
+		if (g_strcmp0((gchar*)name, "CHAPTER") == 0)
+				seen_chapters++;
+
+		if (seen_chapters == chapter)
+			goto found_chapter;
+
+		ret = xmlTextReaderNext(reader);
 	}
 
+found_chapter: {
+	xmlNodePtr chapternode = xmlTextReaderExpand(reader);
+	guint num_vers = 0;
+	xmlNodePtr cur = chapternode->children;
+	while (cur) {
+		if (g_strcmp0((gchar*)cur->name, "VERS") == 0)
+			num_vers++;
+		cur = cur->next;
+	}
+
+	verses = g_new(gchar*, num_vers+1);
+	cur = chapternode->children;
+	gint i = 0;
+	while (cur) {
+		if (g_strcmp0((gchar*)cur->name, "VERS") == 0) {
+			verses[i] = (gchar*)xmlNodeGetContent(cur);
+			i++;
+		}
+		cur = cur->next;
+	}
+	verses[num_vers] = 0x0;
+/**/}
+
+out:
 	xmlFreeTextReader(reader);
-	return NULL;
+	return verses;
 }
