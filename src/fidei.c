@@ -25,6 +25,8 @@ typedef struct {
 	gint active_booknum;
 	gint active_chapter;
 
+	GSettings* settings;
+
 	AdwWindowTitle* title;
 	// parent
 	GtkStack* initializer_stack;
@@ -217,6 +219,14 @@ static void chapter_fwd_navbtn_clicked(GtkButton*, FideiAppWindow* self) {
 	fidei_appwindow_open_chapter(self, priv->active_booknum, priv->active_chapter + 1);
 }
 
+static void fidei_appwindow_setup_window_size(FideiAppWindow* self) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+
+	g_settings_bind(priv->settings, "window-width", self, "default-width", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind(priv->settings, "window-height", self, "default-height", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind(priv->settings, "is-maximized", self, "maximized", G_SETTINGS_BIND_DEFAULT);
+}
+
 void fidei_appwindow_init(FideiAppWindow* self) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 	priv->bibles = NULL;
@@ -224,6 +234,9 @@ void fidei_appwindow_init(FideiAppWindow* self) {
 	priv->active_biblebook = NULL;
 	priv->active_booknum = -1;
 	priv->active_chapter = -1;
+
+	priv->settings = g_settings_new("arpa.sp1rit.Fidei");
+	fidei_appwindow_setup_window_size(self);
 
 	gtk_widget_init_template(GTK_WIDGET(self));
 

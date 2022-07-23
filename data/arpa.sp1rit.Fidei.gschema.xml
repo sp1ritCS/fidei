@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="arpa.sp1rit.Fidei">
+	<schema id="arpa.sp1rit.Fidei" path="/arpa/sp1rit/Fidei/">
+		<key name="window-width" type="i">
+			<default>1280</default>
+			<summary>Default window width</summary>
+		</key>
+		<key name="window-height" type="i">
+			<default>720</default>
+			<summary>Default window height</summary>
+		</key>
+		<key name="is-maximized" type="b">
+			<default>false</default>
+			<summary>Default window maximized behaviour</summary>
+		</key>
+	</schema>
+</schemalist>
+
