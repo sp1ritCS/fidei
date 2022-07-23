@@ -43,6 +43,7 @@ typedef struct {
 	GtkButton* chapter_back_book_navbtn;
 	GtkGridView* chapter_selector;
 	// content
+	GtkBox* content_actions;
 	GtkButton* leaflet_back_navbtn;
 	GtkButton* chapter_prev_navbtn;
 	GtkButton* chapter_fwd_navbtn;
@@ -116,6 +117,7 @@ void fidei_appwindow_class_init(FideiAppWindowClass* class) {
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, chaptersel_box);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, chapter_back_book_navbtn);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, chapter_selector);
+	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, content_actions);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, leaflet_back_navbtn);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, chapter_prev_navbtn);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, chapter_fwd_navbtn);
@@ -372,6 +374,7 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	GtkWidget* chapterview = create_chapter_content_view(verses);
 	g_strfreev(verses);
 
+	gtk_widget_set_visible(GTK_WIDGET(priv->content_actions), TRUE);
 	gtk_scrolled_window_set_child(priv->content, chapterview);
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->chapter_prev_navbtn), (gboolean)chapter);
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->chapter_fwd_navbtn), chapter+1 < fidei_biblebook_get_num_chapters(priv->active_biblebook));

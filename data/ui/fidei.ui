@@ -39,18 +39,17 @@
 														<property name="orientation">horizontal</property>
 														<child>
 															<object class="GtkButton" id="browser_btn">
-																<property name="label">Download more</property>
+																<property name="label" translatable="yes">Download more</property>
 																<property name="hexpand">true</property>
 																<property name="halign">start</property>
 																<style>
-																	<class name="suggested-action" />
 																	<class name="flat" />
 																</style>
 															</object>
 														</child>
 														<child>
 															<object class="GtkButton" id="bibledir_btn">
-																<property name="label">Open directory</property>
+																<property name="label" translatable="yes">Open directory</property>
 																<style>
 																	<class name="suggested-action" />
 																</style>
@@ -159,8 +158,9 @@
 										<property name="orientation">vertical</property>
 										<property name="width-request">384</property>
 										<child>
-											<object class="GtkBox">
+											<object class="GtkBox" id="content_actions">
 												<property name="orientation">horizontal</property>
+												<property name="visible">false</property> <!-- will be set to true once chapter has been opened. bound against seperator:visibe -->
 												<child>
 													<object class="GtkBox">
 														<property name="orientation">horizontal</property>
@@ -217,12 +217,25 @@
 										<child>
 											<object class="GtkSeparator">
 												<property name="orientation">horizontal</property>
+												<property name="visible"
+																	bind-source="content_actions"
+																	bind-property="visible"
+																	bind-flags="sync-create|bidirectional"/>
 											</object>
 										</child>
 										<child>
 											<object class="GtkScrolledWindow" id="content">
 												<property name="hscrollbar_policy">never</property>
 												<property name="vexpand">true</property>
+												<property name="child">
+													<object class="AdwStatusPage">
+														<property name="icon-name">daytime-sunrise-symbolic</property>
+														<property name="title" translatable="yes">Welcome to Fidei!</property>
+														<property name="description" translatable="yes">Pick a book from the sidebar on the left</property>
+														<property name="hexpand">true</property>
+														<property name="vexpand">true</property>
+													</object>
+												</property>
 											</object>
 										</child>
 									</object>
