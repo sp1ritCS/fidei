@@ -26,6 +26,15 @@
 			<summary>Identifier of the currently active bible</summary>
 		</key>
 		<!-- end bible state -->
+		<!-- begin preferences -->
+		<key name="small-caps" type="a{ss}">
+			<default>{
+				"de": "HERRN?",
+				"en": "LORD"
+			}</default>
+			<summary>Strings that will be turned into small caps</summary>
+		</key>
+		<!-- end preferences -->
 	</schema>
 </schemalist>
 

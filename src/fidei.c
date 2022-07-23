@@ -1,5 +1,6 @@
 #include "fidei.h"
 #include "num.h"
+#include "preferences.h"
 
 gchar* fidei_bookitem_factory_get_title(GtkListItem*, FideiBibleBook* book) {
 	if (!FIDEI_IS_BIBLEBOOK(book))
@@ -136,6 +137,36 @@ static void navigate_picker_activated(GSimpleAction*, GVariant*, FideiAppWindow*
 	gtk_stack_set_visible_child(priv->initializer_stack, GTK_WIDGET(priv->bibleselect_scroll));
 }
 
+const gchar* authors[] = {
+	"Florian \"sp1rit\" <sp1rit@national.shitposting.agency>",
+	NULL
+};
+static void open_aboutwin_activated(GSimpleAction*, GVariant*, FideiAppWindow* self) {
+	GtkWidget* diag = gtk_about_dialog_new();
+
+	gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(diag), "Fidei");
+	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(diag), "Take back your faith");
+	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(diag), "Copyright (c) 2022 Florian \"sp1rit\" and contributors");
+	gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(diag), GTK_LICENSE_AGPL_3_0);
+	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(diag), "0.1.0");
+	gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(diag), "https://github.com/sp1ritCS/fidei");
+	gtk_about_dialog_set_website_label(GTK_ABOUT_DIALOG(diag), "github.com/sp1ritCS/fidei");
+	gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(diag), authors);
+
+	gtk_window_set_transient_for(GTK_WINDOW(diag), GTK_WINDOW(self));
+	gtk_window_set_modal(GTK_WINDOW(diag), TRUE);
+	gtk_widget_show(diag);
+}
+
+static void open_preferences_activated(GSimpleAction*, GVariant*, FideiAppWindow* self) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+	GtkWidget* prefs = fidei_preferences_new(priv->settings);
+
+	gtk_window_set_transient_for(GTK_WINDOW(prefs), GTK_WINDOW(self));
+	gtk_window_set_modal(GTK_WINDOW(prefs), TRUE);
+	gtk_widget_show(prefs);
+}
+
 static void fidei_appwindow_setup_window_size(FideiAppWindow* self) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 
@@ -244,8 +275,14 @@ void fidei_appwindow_init(FideiAppWindow* self) {
 	fidei_appwindow_setup_window_size(self);
 
 	GSimpleAction* navigate_picker = g_simple_action_new("nav_picker", NULL);
+	GSimpleAction* open_preferences = g_simple_action_new("prefs", NULL);
+	GSimpleAction* open_aboutwin = g_simple_action_new("about", NULL);
 	g_signal_connect(navigate_picker, "activate", G_CALLBACK(navigate_picker_activated), self);
+	g_signal_connect(open_preferences, "activate", G_CALLBACK(open_preferences_activated), self);
+	g_signal_connect(open_aboutwin, "activate", G_CALLBACK(open_aboutwin_activated), self);
 	g_action_map_add_action(G_ACTION_MAP(self), G_ACTION(navigate_picker));
+	g_action_map_add_action(G_ACTION_MAP(self), G_ACTION(open_preferences));
+	g_action_map_add_action(G_ACTION_MAP(self), G_ACTION(open_aboutwin));
 
 	gtk_widget_init_template(GTK_WIDGET(self));
 
@@ -390,8 +427,30 @@ void fidei_appwindow_set_active_bible(FideiAppWindow* self, FideiBible* bible) {
 	g_object_notify_by_pspec(G_OBJECT(self), obj_properties[PROP_ACTIVE_BIBLE]);
 }
 
+static gboolean create_chapter_content_view_regex_match_eval(const GMatchInfo* match, GString* result, gpointer) {
+	gchar* matched = g_match_info_fetch(match, 0);
+	gsize len = g_utf8_strlen(matched, -1);
+	if (len < 2) {
+		result = g_string_new(matched);
+		return FALSE;
+	}
 
-static GtkWidget* create_chapter_content_view(gchar** verses) {
+	g_string_append(result, "<span font_variant=\"small-caps\">");
+	g_string_append_len(result, matched, 1);
+
+	gchar* lowered = g_utf8_strdown(&matched[1], -1);
+	g_string_append(result, lowered);
+	g_free(lowered);
+
+	g_string_append(result, "</span>");
+
+	g_free(matched);
+	return FALSE;
+}
+
+static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar* biblelang, gchar** verses) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+
 	GtkWidget* view = gtk_text_view_new();
 	gtk_widget_set_hexpand(view, TRUE);
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
@@ -403,6 +462,32 @@ static GtkWidget* create_chapter_content_view(gchar** verses) {
 	gtk_text_view_set_bottom_margin(GTK_TEXT_VIEW(view), 32);
 	GtkTextBuffer* buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
 
+
+	gchar* lord_regex = NULL;
+
+	GVariantIter* iter;
+	g_settings_get(priv->settings, "small-caps", "a{ss}", &iter);
+	gchar *lang,*regex;
+	while (g_variant_iter_loop(iter, "{ss}", &lang, &regex))
+		if (g_ascii_strcasecmp(biblelang, lang) == 0) {
+			lord_regex = g_strdup(regex);
+			break;
+		}
+	g_variant_iter_free(iter);
+
+
+	GRegex* compiled_regex = NULL;
+
+	GError* err = NULL;
+	compiled_regex = g_regex_new(lord_regex, 0, G_REGEX_MATCH_NOTEMPTY, &err);
+	if (err) {
+		g_critical("Invalid regex `%s`: %s\n", lord_regex, err->message);
+		g_error_free(err);
+		compiled_regex = NULL;
+	}
+
+	g_free(lord_regex);
+
 	GtkTextIter end;
 	for (gsize i = 0; verses[i]; i++) {
 		gtk_text_buffer_get_end_iter(buf, &end);
@@ -410,7 +495,19 @@ static GtkWidget* create_chapter_content_view(gchar** verses) {
 		gtk_text_buffer_insert_markup(buf, &end, &verslabel[(gsize)!i], -1);
 		g_free(verslabel);
 		gtk_text_buffer_get_end_iter(buf, &end);
-		gtk_text_buffer_insert(buf, &end, verses[i], -1);
+
+
+		if (compiled_regex) {
+			GError* err = NULL;
+			gchar* replaced = g_regex_replace_eval(compiled_regex, verses[i], -1, 0, G_REGEX_MATCH_NOTEMPTY, (GRegexEvalCallback)create_chapter_content_view_regex_match_eval, NULL, &err);
+			if (err) {
+				g_critical("Regex match failure `%s`: %s\n", lord_regex, err->message);
+				g_error_free(err);
+				gtk_text_buffer_insert(buf, &end, verses[i], -1);
+			} else
+				gtk_text_buffer_insert_markup(buf, &end, replaced, -1);
+		} else
+			gtk_text_buffer_insert(buf, &end, verses[i], -1);
 	}
 
 	return view;
@@ -423,7 +520,7 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	g_return_if_fail(chapter < fidei_biblebook_get_num_chapters(priv->active_biblebook));
 
 	gchar** verses = fidei_bible_read_chapter(priv->active_bible, book, chapter);
-	GtkWidget* chapterview = create_chapter_content_view(verses);
+	GtkWidget* chapterview = create_chapter_content_view(self, fidei_bible_get_lang(priv->active_bible), verses);
 	g_strfreev(verses);
 
 	g_settings_set(priv->settings, "active-chapter", "(si)", fidei_biblebook_get_bsname(priv->active_biblebook), chapter);

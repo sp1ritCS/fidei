@@ -7,6 +7,16 @@
 				<attribute name="action">win.nav_picker</attribute>
 			</item>
 		</section>
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">Preferences</attribute>
+				<attribute name="action">win.prefs</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">About Fidei</attribute>
+				<attribute name="action">win.about</attribute>
+			</item>
+		</section>
 	</menu>
 	<template class="FideiAppWindow" parent="AdwApplicationWindow">
 		<property name="content">

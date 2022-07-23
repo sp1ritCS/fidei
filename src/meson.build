@@ -4,12 +4,14 @@ fidei = executable('fidei', [
 		'app.c',
 		'fidei.c',
 		'bible.c',
-		'num.c'
+		'num.c',
+		'preferences.c'
 	], fidei_res,
 	dependencies: [
 		dependency('gtk4'),
 		dependency('libadwaita-1'),
-		dependency('libxml-2.0')
+		dependency('libxml-2.0'),
+		dependency('icu-uc')
 	],
 	export_dynamic: true,
 	install : true

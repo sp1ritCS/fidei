@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<template class="FideiPreferences" parent="AdwPreferencesWindow">
+		<child>
+			<object class="AdwPreferencesPage">
+				<property name="title">Lord presentation</property>
+				<property name="icon-name">format-text-direction-ltr-symbolic</property>
+				<property name="name">lord</property>
+				<child>
+					<object class="AdwPreferencesGroup">
+						<property name="title">Small caps</property>
+						<property name="description">Configure string matches that will convert to small caps</property>
+						<child>
+							<object class="AdwBin" id="smallcaps_bin"/>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+	</template>
+</interface>
