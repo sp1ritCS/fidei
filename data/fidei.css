@@ -1,0 +1,8 @@
+box.book {
+	padding: 4px 0;
+}
+
+textview.content {
+	font: 12pt serif;
+	padding: 16pt;
+}
