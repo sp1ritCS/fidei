@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<template class="GtkListItem">
+		<property name="child">
+			<object class="GtkBox">
+				<property name="orientation">vertical</property>
+				<property name="margin-top">4</property>
+				<property name="margin-bottom">4</property>
+				<property name="valign">center</property>
+				<child>
+					<object class="GtkLabel">
+						<property name="halign">center</property>
+						<property name="margin-start">4</property>
+						<property name="margin-end">4</property>
+						<style>
+							<class name="title"/>
+						</style>
+						<binding name="label">
+							<closure type="gchararray" function="fidei_bookitem_factory_get_title">
+								<lookup name="item">GtkListItem</lookup>
+							</closure>
+						</binding>
+					</object>"
+				</child>
+				<child>
+					<object class="GtkLabel">
+						<style>
+							<class name="subtitle"/>
+						</style>
+						<binding name="label">
+							<closure type="gchararray" function="fidei_bookitem_factory_get_subtitle">
+								<lookup name="item">GtkListItem</lookup>
+							</closure>
+						</binding>
+					</object>"
+				</child>
+				<style>
+					<class name="card"/>
+					<class name="book"/>
+				</style>
+			</object>
+		</property>
+	</template>
+</interface>
