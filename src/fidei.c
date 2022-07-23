@@ -343,6 +343,10 @@ static GtkWidget* create_chapter_content_view(gchar** verses) {
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
 	gtk_widget_add_css_class(view, "content");
+	gtk_text_view_set_top_margin(GTK_TEXT_VIEW(view), 32);
+	gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 32);
+	gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 32);
+	gtk_text_view_set_bottom_margin(GTK_TEXT_VIEW(view), 32);
 	GtkTextBuffer* buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
 
 	GtkTextIter end;
