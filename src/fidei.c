@@ -22,7 +22,6 @@ typedef struct {
 	GListModel* bibles;
 	FideiBible* active_bible;
 	FideiBibleBook* active_biblebook;
-	gint active_booknum;
 	gint active_chapter;
 
 	GSettings* settings;
@@ -32,6 +31,7 @@ typedef struct {
 	GtkStack* initializer_stack;
 
 	// bible picker
+	GtkScrolledWindow* bibleselect_scroll;
 	GtkListBox* bible_selector;
 	GtkButton* browser_btn;
 	GtkButton* bibledir_btn;
@@ -111,6 +111,7 @@ void fidei_appwindow_class_init(FideiAppWindowClass* class) {
 	gtk_widget_class_set_template_from_resource(widget_class, "/arpa/sp1rit/Fidei/ui/fidei.ui");
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, title);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, initializer_stack);
+	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, bibleselect_scroll);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, bible_selector);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, browser_btn);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, bibledir_btn);
@@ -128,6 +129,20 @@ void fidei_appwindow_class_init(FideiAppWindowClass* class) {
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, content);
 }
 
+static void navigate_picker_activated(GSimpleAction*, GVariant*, FideiAppWindow* self) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+
+	g_settings_reset(priv->settings, "open-bible");
+	gtk_stack_set_visible_child(priv->initializer_stack, GTK_WIDGET(priv->bibleselect_scroll));
+}
+
+static void fidei_appwindow_setup_window_size(FideiAppWindow* self) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+
+	g_settings_bind(priv->settings, "window-width", self, "default-width", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind(priv->settings, "window-height", self, "default-height", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind(priv->settings, "is-maximized", self, "maximized", G_SETTINGS_BIND_DEFAULT);
+}
 
 static void bible_selector_clicked(GtkListBox*, GtkListBoxRow* row, FideiAppWindow* self) {
 	fidei_appwindow_set_active_bible(self, g_object_get_data(G_OBJECT(row), "bible"));
@@ -179,7 +194,6 @@ static void book_clicked(GtkListView* view, guint pos, FideiAppWindow* self) {
 	GListModel* books = gtk_single_selection_get_model(GTK_SINGLE_SELECTION(model));
 	FideiBibleBook* book = g_list_model_get_item(books, pos);
 	priv->active_biblebook = book;
-	priv->active_booknum = (gint)pos;
 
 	GListStore* store = g_list_store_new(FIDEI_TYPE_LISTNUM);
 	for (gint i = 0; i < fidei_biblebook_get_num_chapters(book); i++) {
@@ -203,7 +217,7 @@ static void chapter_back_book_navbtn_clicked(GtkButton*, FideiAppWindow* self) {
 static void chapter_clicked(GtkListView*, guint pos, FideiAppWindow* self) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 
-	fidei_appwindow_open_chapter(self, priv->active_booknum, pos);
+	fidei_appwindow_open_chapter(self, fidei_biblebook_get_booknum(priv->active_biblebook), pos);
 }
 
 static void leaflet_back_navbtn_clicked(GtkButton*, FideiAppWindow* self) {
@@ -212,19 +226,11 @@ static void leaflet_back_navbtn_clicked(GtkButton*, FideiAppWindow* self) {
 }
 static void chapter_prev_navbtn_clicked(GtkButton*, FideiAppWindow* self) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
-	fidei_appwindow_open_chapter(self, priv->active_booknum, priv->active_chapter - 1);
+	fidei_appwindow_open_chapter(self, fidei_biblebook_get_booknum(priv->active_biblebook), priv->active_chapter - 1);
 }
 static void chapter_fwd_navbtn_clicked(GtkButton*, FideiAppWindow* self) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
-	fidei_appwindow_open_chapter(self, priv->active_booknum, priv->active_chapter + 1);
-}
-
-static void fidei_appwindow_setup_window_size(FideiAppWindow* self) {
-	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
-
-	g_settings_bind(priv->settings, "window-width", self, "default-width", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind(priv->settings, "window-height", self, "default-height", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind(priv->settings, "is-maximized", self, "maximized", G_SETTINGS_BIND_DEFAULT);
+	fidei_appwindow_open_chapter(self, fidei_biblebook_get_booknum(priv->active_biblebook), priv->active_chapter + 1);
 }
 
 void fidei_appwindow_init(FideiAppWindow* self) {
@@ -232,11 +238,14 @@ void fidei_appwindow_init(FideiAppWindow* self) {
 	priv->bibles = NULL;
 	priv->active_bible = NULL;
 	priv->active_biblebook = NULL;
-	priv->active_booknum = -1;
 	priv->active_chapter = -1;
 
 	priv->settings = g_settings_new("arpa.sp1rit.Fidei");
 	fidei_appwindow_setup_window_size(self);
+
+	GSimpleAction* navigate_picker = g_simple_action_new("nav_picker", NULL);
+	g_signal_connect(navigate_picker, "activate", G_CALLBACK(navigate_picker_activated), self);
+	g_action_map_add_action(G_ACTION_MAP(self), G_ACTION(navigate_picker));
 
 	gtk_widget_init_template(GTK_WIDGET(self));
 
@@ -311,9 +320,14 @@ void fidei_appwindow_set_bibles(FideiAppWindow* self, GListModel* bibles) {
 
 	priv->bibles = bibles;
 
+	gchar* last_active = g_settings_get_string(priv->settings, "open-bible");
 
 	for (guint i = 0; i < g_list_model_get_n_items(priv->bibles); i++) {
 		FideiBible* state = FIDEI_BIBLE(g_list_model_get_object(priv->bibles, i));
+
+		if ((last_active && *last_active) && g_strcmp0(fidei_bible_get_identifier(state), last_active) == 0)
+			fidei_appwindow_set_active_bible(self, state);
+
 		GtkWidget* item = create_picker_item(
 			fidei_bible_get_title(state),
 			fidei_bible_get_lang(state),
@@ -322,6 +336,8 @@ void fidei_appwindow_set_bibles(FideiAppWindow* self, GListModel* bibles) {
 		g_object_set_data(G_OBJECT(item), "bible", state);
 		gtk_list_box_append(GTK_LIST_BOX(priv->bible_selector), item);
 	}
+
+	g_free(last_active);
 
 
 	g_object_notify_by_pspec(G_OBJECT(self), obj_properties[PROP_BIBLES]);
@@ -342,11 +358,30 @@ void fidei_appwindow_set_active_bible(FideiAppWindow* self, FideiBible* bible) {
 		return;
 	priv->active_bible = bible;
 
+	const gchar* identifier = fidei_bible_get_identifier(priv->active_bible);
+	if (identifier)
+		g_settings_set_string(priv->settings, "open-bible", identifier);
+
 	if (priv->active_bible) {
+		gchar* active_book;
+		gint active_chapter;
+
+		g_settings_get(priv->settings, "active-chapter", "(si)", &active_book, &active_chapter);
+
 		GListStore* books = fidei_bible_read_books(priv->active_bible);
-		GtkSingleSelection* model = gtk_single_selection_new(G_LIST_MODEL(books));
+		GtkSingleSelection* model = gtk_single_selection_new(G_LIST_MODEL(g_object_ref(books)));
 		gtk_list_view_set_model(priv->book_selector, GTK_SELECTION_MODEL(model));
+		for (guint i = 0; i < g_list_model_get_n_items(G_LIST_MODEL(g_object_ref(books))); i++) {
+			FideiBibleBook* book = FIDEI_BIBLEBOOK(g_list_model_get_object(G_LIST_MODEL(books), i));
+			if (g_strcmp0(fidei_biblebook_get_bsname(book), active_book) == 0) {
+				priv->active_biblebook = book;
+				fidei_appwindow_open_chapter(self, fidei_biblebook_get_booknum(book), active_chapter);
+				break; // TODO: if no new chaper was opened show statuspage again
+			}
+		}
 		g_object_unref(model);
+
+		g_free(active_book);
 	} else {
 		gtk_list_view_set_model(priv->book_selector, NULL);
 	}
@@ -390,6 +425,8 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	gchar** verses = fidei_bible_read_chapter(priv->active_bible, book, chapter);
 	GtkWidget* chapterview = create_chapter_content_view(verses);
 	g_strfreev(verses);
+
+	g_settings_set(priv->settings, "active-chapter", "(si)", fidei_biblebook_get_bsname(priv->active_biblebook), chapter);
 
 	gchar* title = g_strdup_printf("%s %d", fidei_biblebook_get_bname(priv->active_biblebook), chapter+1);
 	adw_window_title_set_title(priv->title, title);

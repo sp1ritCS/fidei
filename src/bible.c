@@ -5,6 +5,7 @@
 typedef struct {
 	xmlChar* bname;
 	xmlChar* bsname;
+	gint booknum;
 	gint num_chapters;
 } FideiBibleBookPrivate;
 struct _FideiBibleBook {
@@ -26,15 +27,17 @@ void fidei_biblebook_init(FideiBibleBook* self) {
 	FideiBibleBookPrivate* priv = fidei_biblebook_get_instance_private(self);
 	priv->bname = NULL;
 	priv->bsname = NULL;
+	priv->booknum = -1;
 	priv->num_chapters = -1;
 }
 
 // takes ownership of strings
-FideiBibleBook* fidei_biblebook_new(xmlChar* bname, xmlChar* bsname, gint num_chapters) {
+FideiBibleBook* fidei_biblebook_new(xmlChar* bname, xmlChar* bsname, gint booknum, gint num_chapters) {
 	FideiBibleBook* self = g_object_new(FIDEI_TYPE_BIBLEBOOK, NULL);
 	FideiBibleBookPrivate* priv = fidei_biblebook_get_instance_private(self);
 	priv->bname = bname;
 	priv->bsname = bsname;
+	priv->booknum = booknum;
 	priv->num_chapters = num_chapters;
 
 	return self;
@@ -49,6 +52,11 @@ const gchar* fidei_biblebook_get_bsname(FideiBibleBook* self) {
 	g_return_val_if_fail(FIDEI_IS_BIBLEBOOK(self), NULL);
 	FideiBibleBookPrivate* priv = fidei_biblebook_get_instance_private(self);
 	return (gchar*)priv->bsname;
+}
+gint fidei_biblebook_get_booknum(FideiBibleBook* self) {
+	g_return_val_if_fail(FIDEI_IS_BIBLEBOOK(self), -1);
+	FideiBibleBookPrivate* priv = fidei_biblebook_get_instance_private(self);
+	return priv->booknum;
 }
 gint fidei_biblebook_get_num_chapters(FideiBibleBook* self) {
 	g_return_val_if_fail(FIDEI_IS_BIBLEBOOK(self), -1);
@@ -121,6 +129,8 @@ static void fidei_bible_object_dispose(GObject* object) {
 
 	if (priv->reader)
 		xmlFreeTextReader(g_steal_pointer(&priv->reader));
+
+	g_clear_object(&priv->books);
 
 	G_OBJECT_CLASS(fidei_bible_parent_class)->dispose(object);
 }
@@ -263,6 +273,12 @@ const gchar* fidei_bible_get_publisher(FideiBible* self) {
 	FideiBiblePrivate* priv = fidei_bible_get_instance_private(self);
 	return (gchar*)priv->publisher;
 }
+const gchar* fidei_bible_get_identifier(FideiBible* self) {
+	g_return_val_if_fail(FIDEI_IS_BIBLE(self), NULL);
+
+	FideiBiblePrivate* priv = fidei_bible_get_instance_private(self);
+	return (gchar*)priv->identifier;
+}
 
 GListStore* fidei_bible_read_books(FideiBible* self) {
 	g_return_val_if_fail(FIDEI_IS_BIBLE(self), NULL);
@@ -271,6 +287,7 @@ GListStore* fidei_bible_read_books(FideiBible* self) {
 	if (priv->reader) {
 		GListStore* books = g_list_store_new(FIDEI_TYPE_BIBLEBOOK);
 
+		gint booknum = 0;
 		gint ret = 1;
 		while (ret == 1) {
 			const xmlChar* name = xmlTextReaderConstName(priv->reader);
@@ -291,9 +308,11 @@ GListStore* fidei_bible_read_books(FideiBible* self) {
 					cret = xmlTextReaderNext(priv->reader);
 				}
 
-				FideiBibleBook* book = fidei_biblebook_new(bname, bsname, num_chapters);
+				FideiBibleBook* book = fidei_biblebook_new(bname, bsname, booknum, num_chapters);
 				g_list_store_append(books, book);
 				g_object_unref(book);
+
+				booknum++;
 			}
 
 			ret = xmlTextReaderNext(priv->reader);

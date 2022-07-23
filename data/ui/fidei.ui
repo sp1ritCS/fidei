@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+	<menu id="fidei_menu">
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">Switch bible</attribute>
+				<attribute name="action">win.nav_picker</attribute>
+			</item>
+		</section>
+	</menu>
 	<template class="FideiAppWindow" parent="AdwApplicationWindow">
 		<property name="content">
 			<object class="GtkBox">
@@ -11,6 +19,12 @@
 								<property name="title">Fidei</property>
 							</object>
 						</property>
+						<child type="end">
+							<object class="GtkMenuButton" id="menu_btn">
+								<property name="menu_model">fidei_menu</property>
+								<property name="icon_name">open-menu-symbolic</property>
+							</object>
+						</child>
 					</object>
 				</child>
 				<child>
@@ -19,7 +33,7 @@
 						<property name="hexpand">true</property>
 						<property name="vexpand">true</property>
 						<child>
-							<object class="GtkScrolledWindow">
+							<object class="GtkScrolledWindow" id="bibleselect_scroll">
 								<property name="hscrollbar_policy">never</property>
 								<property name="child">
 									<object class="AdwClamp">
@@ -69,6 +83,8 @@
 						</child>
 						<child>
 							<object class="AdwLeaflet" id="main">
+								<property name="can-navigate-back">true</property>
+								<property name="can-navigate-forward">true</property>
 								<child>
 									<object class="GtkStack" id="selector_stack">
 										<property name="transition_type">slide-left-right</property>

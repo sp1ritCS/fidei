@@ -10,6 +10,7 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (FideiBibleBook, fidei_biblebook, FIDEI, BIBLEBOOK, GObject)
 const gchar* fidei_biblebook_get_bname(FideiBibleBook* self);
 const gchar* fidei_biblebook_get_bsname(FideiBibleBook* self);
+gint fidei_biblebook_get_booknum(FideiBibleBook* self);
 gint fidei_biblebook_get_num_chapters(FideiBibleBook* self);
 
 // ---
@@ -25,6 +26,7 @@ FideiBible* fidei_bible_new(const gchar* path);
 const gchar* fidei_bible_get_title(FideiBible* self);
 const gchar* fidei_bible_get_lang(FideiBible* self);
 const gchar* fidei_bible_get_publisher(FideiBible* self);
+const gchar* fidei_bible_get_identifier(FideiBible* self);
 
 GListStore* fidei_bible_read_books(FideiBible* self);
 gchar** fidei_bible_read_chapter(FideiBible* self, gint book, gint chapter);
