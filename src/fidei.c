@@ -490,7 +490,7 @@ static gboolean create_chapter_content_view_regex_match_eval(const GMatchInfo* m
 	return FALSE;
 }
 
-static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar* biblelang, gchar** verses) {
+static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar* biblelang, FideiBibleVers* verses, guint n_verses) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 
 	GtkWidget* view = gtk_text_view_new();
@@ -533,31 +533,40 @@ static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar*
 	g_free(lord_regex);
 
 	GtkTextIter end;
-	for (gsize i = 0; verses[i]; i++) {
+	for (gsize i = 0; i < n_verses; i++) {
+		gboolean has_caption = FALSE;
+		if (verses[i].caption) {
+			gtk_text_buffer_get_end_iter(buf, &end);
+			gchar* caption = g_strdup_printf("\n\n<span font_family=\"Cantarell\" font_size=\"large\" font_weight=\"bold\" font_variant=\"all-petite-caps\">%s</span>\n", verses[i].caption);
+			gtk_text_buffer_insert_markup(buf, &end, &caption[((gsize)!i)*2], -1);
+			g_free(caption);
+
+			has_caption = TRUE;
+		}
+
 		gtk_text_buffer_get_end_iter(buf, &end);
 		gchar* verslabel = g_strdup_printf(" <span font_family=\"sans-serif\" font_size=\"8pt\" rise=\"4pt\">%ld </span>", i+1);
-		gtk_text_buffer_insert_markup(buf, &end, &verslabel[(gsize)!i], -1);
+		gtk_text_buffer_insert_markup(buf, &end, &verslabel[(gsize)((!i)|has_caption)], -1);
 		g_free(verslabel);
+
+
 		gtk_text_buffer_get_end_iter(buf, &end);
-
-
 		if (compiled_regex) {
 			GError* err = NULL;
-			gchar* replaced = g_regex_replace_eval(compiled_regex, verses[i], -1, 0, G_REGEX_MATCH_NOTEMPTY, (GRegexEvalCallback)create_chapter_content_view_regex_match_eval, NULL, &err);
+			gchar* replaced = g_regex_replace_eval(compiled_regex, verses[i].content, -1, 0, G_REGEX_MATCH_NOTEMPTY, (GRegexEvalCallback)create_chapter_content_view_regex_match_eval, NULL, &err);
 			if (err) {
 				g_critical("Regex match failure `%s`: %s\n", lord_regex, err->message);
 				g_error_free(err);
-				gtk_text_buffer_insert(buf, &end, verses[i], -1);
+				gtk_text_buffer_insert(buf, &end, verses[i].content, -1);
 			} else
 				gtk_text_buffer_insert_markup(buf, &end, replaced, -1);
 		} else
-			gtk_text_buffer_insert(buf, &end, verses[i], -1);
+			gtk_text_buffer_insert(buf, &end, verses[i].content, -1);
 	}
 
 	GtkTextIter start;
 	gtk_text_buffer_get_start_iter(buf, &start);
 	gtk_text_buffer_get_end_iter(buf, &end);
-	//gtk_text_buffer_remove_tag(GtkTextBuffer *buffer, GtkTextTag *tag, const GtkTextIter *start, const GtkTextIter *end)
 	gtk_text_buffer_apply_tag(buf, tag, &start, &end);
 
 	create_chapter_content_view_apply_userfont(self, GTK_TEXT_VIEW(view));
@@ -570,9 +579,12 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 	g_return_if_fail(chapter < fidei_biblebook_get_num_chapters(priv->active_biblebook));
 
-	gchar** verses = fidei_bible_read_chapter(priv->active_bible, book, chapter);
-	GtkWidget* chapterview = create_chapter_content_view(self, fidei_bible_get_lang(priv->active_bible), verses);
-	g_strfreev(verses);
+	FideiBibleVers* verses;
+	guint num_verses = fidei_bible_read_chapter(priv->active_bible, book, chapter, &verses);
+	GtkWidget* chapterview = create_chapter_content_view(self, fidei_bible_get_lang(priv->active_bible), verses, num_verses);
+	for (guint i = 0; i < num_verses; i++)
+		fidei_biblevers_free_inner(verses[i]);
+	g_free(verses);
 
 	g_settings_set(priv->settings, "active-chapter", "(si)", fidei_biblebook_get_bsname(priv->active_biblebook), chapter);
 

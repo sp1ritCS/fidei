@@ -15,6 +15,12 @@ gint fidei_biblebook_get_num_chapters(FideiBibleBook* self);
 
 // ---
 
+typedef struct {
+	gchar* caption;
+	gchar* content;
+} FideiBibleVers;
+void fidei_biblevers_free_inner(FideiBibleVers vers);
+
 #define FIDEI_TYPE_BIBLE (fidei_bible_get_type())
 G_DECLARE_FINAL_TYPE (FideiBible, fidei_bible, FIDEI, BIBLE, GObject)
 
@@ -29,7 +35,7 @@ const gchar* fidei_bible_get_publisher(FideiBible* self);
 const gchar* fidei_bible_get_identifier(FideiBible* self);
 
 GListStore* fidei_bible_read_books(FideiBible* self);
-gchar** fidei_bible_read_chapter(FideiBible* self, gint book, gint chapter);
+guint fidei_bible_read_chapter(FideiBible* self, gint book, gint chapter, FideiBibleVers** verses);
 
 G_END_DECLS
 

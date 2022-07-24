@@ -66,6 +66,12 @@ gint fidei_biblebook_get_num_chapters(FideiBibleBook* self) {
 
 // ---
 
+void fidei_biblevers_free_inner(FideiBibleVers vers) {
+	g_free(g_steal_pointer(&vers.caption));
+	g_free(g_steal_pointer(&vers.content));
+}
+
+
 typedef struct {
 	gchar* path;
 
@@ -327,12 +333,14 @@ GListStore* fidei_bible_read_books(FideiBible* self) {
 	}
 }
 
-gchar** fidei_bible_read_chapter(FideiBible* self, gint book, gint chapter) {
-	g_return_val_if_fail(FIDEI_IS_BIBLE(self), NULL);
-	g_return_val_if_fail((book | chapter) >= 0, NULL);
+guint fidei_bible_read_chapter(FideiBible* self, gint book, gint chapter, FideiBibleVers** verses) {
+	g_return_val_if_fail(FIDEI_IS_BIBLE(self), -1);
+	g_return_val_if_fail((book | chapter) >= 0, -1);
 	FideiBiblePrivate* priv = fidei_bible_get_instance_private(self);
 
-	gchar** verses = NULL;
+	FideiBibleVers* verses_i = NULL;
+	guint num_verses = 0;
+
 	gint seen_books = -1;
 	gint seen_chapters = -1;
 
@@ -373,28 +381,38 @@ found_book:
 
 found_chapter: {
 	xmlNodePtr chapternode = xmlTextReaderExpand(reader);
-	guint num_vers = 0;
 	xmlNodePtr cur = chapternode->children;
 	while (cur) {
 		if (g_strcmp0((gchar*)cur->name, "VERS") == 0)
-			num_vers++;
+			num_verses++;
 		cur = cur->next;
 	}
 
-	verses = g_new(gchar*, num_vers+1);
+	verses_i = g_new0(FideiBibleVers, num_verses);
 	cur = chapternode->children;
 	gint i = 0;
 	while (cur) {
+		if (g_strcmp0((gchar*)cur->name, "CAPTION") == 0) {
+			xmlChar* vers = xmlGetProp(cur, (const xmlChar*)"vref");
+			if (vers) {
+				gint64 versref = g_ascii_strtoull((const gchar*)vers, NULL, 10);
+				if (versref && versref < num_verses)
+					verses_i[i].caption = (gchar*)xmlNodeGetContent(cur);
+				else
+					g_warning("Invalid vref found on caption: %s", vers);
+				xmlFree(vers);
+			}
+		}
 		if (g_strcmp0((gchar*)cur->name, "VERS") == 0) {
-			verses[i] = (gchar*)xmlNodeGetContent(cur);
+			verses_i[i].content = (gchar*)xmlNodeGetContent(cur);
 			i++;
 		}
 		cur = cur->next;
 	}
-	verses[num_vers] = 0x0;
 /**/}
 
 out:
 	xmlFreeTextReader(reader);
-	return verses;
+	*verses = verses_i;
+	return num_verses;
 }
