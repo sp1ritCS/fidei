@@ -497,6 +497,7 @@ static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar*
 	gtk_widget_set_hexpand(view, TRUE);
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
+	gtk_text_view_set_justification(GTK_TEXT_VIEW(view), GTK_JUSTIFY_FILL);
 	gtk_widget_add_css_class(view, "content");
 	gtk_text_view_set_top_margin(GTK_TEXT_VIEW(view), 32);
 	gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 32);
