@@ -548,11 +548,13 @@ static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar*
 	GRegex* compiled_regex = NULL;
 
 	GError* err = NULL;
-	compiled_regex = g_regex_new(lord_regex, 0, G_REGEX_MATCH_NOTEMPTY, &err);
-	if (err) {
-		g_critical("Invalid regex `%s`: %s\n", lord_regex, err->message);
-		g_error_free(err);
-		compiled_regex = NULL;
+	if (lord_regex) {
+		compiled_regex = g_regex_new(lord_regex, 0, G_REGEX_MATCH_NOTEMPTY, &err);
+		if (err) {
+			g_critical("Invalid regex `%s`: %s\n", lord_regex, err->message);
+			g_error_free(err);
+			compiled_regex = NULL;
+		}
 	}
 
 	g_free(lord_regex);
