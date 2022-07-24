@@ -4,6 +4,7 @@ fidei_res = gnome.compile_resources('fidei_res', 'fidei.gresource.xml',
 )
 
 install_data('@0@.desktop'.format(app_id), install_dir: get_option('datadir') / 'applications')
+install_data('@0@.metainfo.xml'.format(app_id), install_dir: get_option('datadir') / 'metainfo')
 install_data('@0@.svg'.format(app_id), install_dir: get_option('datadir') / 'icons'  / 'hicolor'  / 'scalable' / 'apps')
 install_data('@0@.gschema.xml'.format(app_id), install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')
 
@@ -12,5 +13,6 @@ devenv.set('GSETTINGS_SCHEMA_DIR', meson.current_build_dir())
 
 gnome.post_install(
 	glib_compile_schemas: true,
+	gtk_update_icon_cache: true,
 	update_desktop_database: true
 )

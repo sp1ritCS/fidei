@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>arpa.sp1rit.Fidei</id>
+
+	<name>Fidei</name>
+	<summary>Bible reader</summary>
+	<description>
+		<p>Fidei is an offline GTK bible reader for GNOME making use of modern technologies like libadwaita.</p>
+		<p>Features include:</p>
+		<ul>
+			<li>Reads bibles with in Zefania XML format</li>
+			<li>Caption/Heading support</li>
+			<li>Support for proper capitalization (small-caps) of »Lord«</li>
+		</ul>
+	</description>
+	<developer_name>Florian "sp1rit"</developer_name>
+	<update_contact>sp1rit@national.shitposting.agency</update_contact>
+	<metadata_license>CC-BY-SA-4.0</metadata_license>
+	<project_license>AGPL-3.0</project_license>
+
+	<icon type="stock">arpa.sp1rit.Fidei</icon>
+	<icon type="remote">https://raw.githubusercontent.com/sp1ritCS/fidei/master/data/arpa.sp1rit.Fidei.svg</icon>
+
+	<categories>
+		<category>GNOME</category>
+		<category>GTK</category>
+	</categories>
+
+	<url type="homepage">https://github.com/sp1ritCS/fidei</url>
+	<url type="bugtracker">https://github.com/sp1ritCS/fidei/issues</url>
+	<!--url type="contact">mailto:sp1rit@national.shitposting.agency</url-->
+	<url type="contribute">https://github.com/sp1ritCS/fidei</url>
+
+	<launchable type="desktop-id">arpa.sp1rit.Fidei.desktop</launchable>
+	<provides>
+		<binary>fidei</binary>
+	</provides>
+
+	<keywords>
+		<keyword>bibel</keyword>
+		<keyword>luther</keyword>
+		<keyword>king james</keyword>
+	</keywords>
+
+	<supports>
+		<control>pointing</control>
+		<control>keyboard</control>
+		<control>touch</control>
+	</supports>
+
+	<screenshots>
+		<screenshot type="default">
+			<caption>The initial screen, showing available bibles on the system</caption>
+			<image>https://media.githubusercontent.com/media/sp1ritCS/fidei/master/screenshots/init-picker.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Fidei in desktop mode, showing Mark 10</caption>
+			<image>https://media.githubusercontent.com/media/sp1ritCS/fidei/master/screenshots/desktop.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Fidei in mobile mode, showing Genesis 3</caption>
+			<image>https://media.githubusercontent.com/media/sp1ritCS/fidei/master/screenshots/mobile.png</image>
+		</screenshot>
+	</screenshots>
+
+	<content_rating type="oars-1.1">
+		<content_attribute id="violence-cartoon">none</content_attribute>
+		<content_attribute id="violence-fantasy">none</content_attribute>
+		<content_attribute id="violence-realistic">none</content_attribute>
+		<content_attribute id="violence-bloodshed">none</content_attribute>
+		<content_attribute id="violence-sexual">none</content_attribute>
+		<content_attribute id="violence-desecration">none</content_attribute>
+		<content_attribute id="violence-slavery">none</content_attribute>
+		<content_attribute id="drugs-alcohol">none</content_attribute>
+		<content_attribute id="drugs-narcotics">none</content_attribute>
+		<content_attribute id="drugs-tobacco">none</content_attribute>
+		<content_attribute id="sex-nudity">none</content_attribute>
+		<content_attribute id="sex-themes">none</content_attribute>
+		<content_attribute id="language-profanity">none</content_attribute>
+		<content_attribute id="language-humor">none</content_attribute>
+		<content_attribute id="language-discrimination">none</content_attribute>
+		<content_attribute id="money-purchasing">none</content_attribute>
+		<content_attribute id="money-advertising">none</content_attribute>
+		<content_attribute id="money-gambling">none</content_attribute>
+	</content_rating>
+
+	<releases>
+		<release version="0.1.0" date="2022-07-24">
+			<description>
+				<p>Initial release</p>
+			</description>
+		</release>
+	</releases>
+</component>
