@@ -7,6 +7,7 @@ fidei = executable('fidei', [
 		'num.c',
 		'preferences.c'
 	], fidei_res,
+	c_args: ['-DFIDEI_VERSION="@0@"'.format(meson.project_version())],
 	dependencies: [
 		dependency('gtk4'),
 		dependency('libadwaita-1'),
