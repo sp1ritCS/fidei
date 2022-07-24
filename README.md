@@ -16,7 +16,9 @@
 | [gtk4](https://www.gtk.org/)                                   | gtk4                           | [git@gitlab.gnome.org:GNOME/gtk.git](https://gitlab.gnome.org/GNOME/gtk/)               |
 | [libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/) | libadwaita-1                   | [git@gitlab.gnome.org:GNOME/libadwaita.git](https://gitlab.gnome.org/GNOME/libadwaita/) |
 | [libxml2](https://xmlsoft.org)                                 | libxml-2.0                     | [git@gitlab.gnome.org:GNOME/libxml2.git](https://gitlab.gnome.org/GNOME/libxml2/)       |
-| [libicu](https://icu.unicode.org)                              | icu-uc                         | [git@github.com:unicode-org/icu.git](https://github.com/unicode-org/icu)                |
+| [libicu](https://icu.unicode.org)*                             | icu-uc                         | [git@github.com:unicode-org/icu.git](https://github.com/unicode-org/icu)                |
+
+Optional dependencies are marked with \*
 
 ## Bible file-format
 

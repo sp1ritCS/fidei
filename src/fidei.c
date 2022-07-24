@@ -1,6 +1,7 @@
 #include "fidei.h"
 #include "num.h"
 #include "preferences.h"
+#include "utils.h"
 
 gchar* fidei_bookitem_factory_get_title(GtkListItem*, FideiBibleBook* book) {
 	if (!FIDEI_IS_BIBLEBOOK(book))
@@ -339,7 +340,9 @@ static GtkWidget* create_picker_item(const gchar* title, const gchar* lang, cons
 	gtk_label_set_single_line_mode(GTK_LABEL(titlew), TRUE);
 	gtk_label_set_xalign(GTK_LABEL(titlew), 0.f);
 
-	gchar* subtitle = g_strdup_printf("%s | %s", lang, publisher);
+	gchar* lang_ui = miso693_to_human_same(lang);
+	gchar* subtitle = g_strdup_printf("%s | %s", lang_ui, publisher);
+	g_free(lang_ui);
 	GtkWidget* subtitlew = gtk_label_new(subtitle);
 	g_free(subtitle);
 	gtk_widget_add_css_class(subtitlew, "subtitle");

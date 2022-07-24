@@ -1,5 +1,5 @@
 #include "preferences.h"
-#include <unicode/uloc.h>
+#include "utils.h"
 
 typedef struct {
 	GSettings* settings;
@@ -191,26 +191,9 @@ static void fidei_preferences_build_smbox(FideiPreferences* self) {
 	while (g_variant_iter_loop(iter, "{ss}", &lang, &regex)) {
 		GtkWidget* row = adw_expander_row_new();
 
-		UChar wide_language_name[0x7F];
-		UErrorCode status = U_ZERO_ERROR;
-		gint32 len = uloc_getDisplayName(lang, "en_US", wide_language_name, 0x7F, &status);
-		if (len > 0) {
-			GError* err = NULL;
-			gchar* language_name = g_utf16_to_utf8(wide_language_name, len, NULL, NULL, &err);
-			if (err) {
-				g_warning("Failed converting wide string to UTF-8: %s\n", err->message);
-				g_error_free(err);
-			} else {
-				if (g_ascii_strcasecmp(language_name, lang) != 0) {
-					gchar* title = g_strdup_printf("%s (%s)", language_name, lang);
-					adw_preferences_row_set_title(ADW_PREFERENCES_ROW(row), title);
-					g_free(title);
-					goto skip_langid_title;
-				}
-			}
-		}
-		adw_preferences_row_set_title(ADW_PREFERENCES_ROW(row), lang);
-skip_langid_title: {
+		gchar* lang_ui = miso693_to_human_same(lang);
+		adw_preferences_row_set_title(ADW_PREFERENCES_ROW(row), lang_ui);
+		g_free(lang_ui);
 
 		GtkWidget* actionbox = adw_action_row_new();
 		adw_preferences_row_set_title(ADW_PREFERENCES_ROW(actionbox), "Regex");
@@ -238,7 +221,6 @@ skip_langid_title: {
 		adw_expander_row_add_row(ADW_EXPANDER_ROW(row), btnbox);
 
 		g_object_bind_property(buf, "text", row, "subtitle", G_BINDING_SYNC_CREATE);
-/**/}
 
 		gtk_list_box_append(GTK_LIST_BOX(box), row);
 	}
