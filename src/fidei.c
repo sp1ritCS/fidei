@@ -52,6 +52,8 @@ typedef struct {
 	GtkButton* chapter_prev_navbtn;
 	GtkButton* chapter_fwd_navbtn;
 	GtkScrolledWindow* content;
+
+	GtkTextView* current_view;
 } FideiAppWindowPrivate;
 
 struct _FideiAppWindow {
@@ -175,6 +177,16 @@ static void fidei_appwindow_setup_window_size(FideiAppWindow* self) {
 	g_settings_bind(priv->settings, "is-maximized", self, "maximized", G_SETTINGS_BIND_DEFAULT);
 }
 
+static void create_chapter_content_view_apply_userfont(FideiAppWindow* self, GtkTextView* view);
+static void fidei_appwindow_font_changed(GSettings*, gchar* key, FideiAppWindow* self) {
+	g_return_if_fail(g_strcmp0(key, "font") == 0);
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+	if (!priv->current_view)
+		return;
+
+	create_chapter_content_view_apply_userfont(self, priv->current_view);
+}
+
 static void bible_selector_clicked(GtkListBox*, GtkListBoxRow* row, FideiAppWindow* self) {
 	fidei_appwindow_set_active_bible(self, g_object_get_data(G_OBJECT(row), "bible"));
 }
@@ -271,8 +283,11 @@ void fidei_appwindow_init(FideiAppWindow* self) {
 	priv->active_biblebook = NULL;
 	priv->active_chapter = -1;
 
+	priv->current_view = NULL;
+
 	priv->settings = g_settings_new("arpa.sp1rit.Fidei");
 	fidei_appwindow_setup_window_size(self);
+	g_signal_connect(priv->settings, "changed::font", G_CALLBACK(fidei_appwindow_font_changed), self);
 
 	GSimpleAction* navigate_picker = g_simple_action_new("nav_picker", NULL);
 	GSimpleAction* open_preferences = g_simple_action_new("prefs", NULL);
@@ -427,6 +442,30 @@ void fidei_appwindow_set_active_bible(FideiAppWindow* self, FideiBible* bible) {
 	g_object_notify_by_pspec(G_OBJECT(self), obj_properties[PROP_ACTIVE_BIBLE]);
 }
 
+static void create_chapter_content_view_apply_userfont(FideiAppWindow* self, GtkTextView* view) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+
+	gchar* selected_font = g_settings_get_string(priv->settings, "font");
+	PangoFontDescription* desc = pango_font_description_from_string(selected_font);
+	g_free(selected_font);
+
+	GtkTextBuffer* buf = gtk_text_view_get_buffer(view);
+	GtkTextTagTable* table = gtk_text_buffer_get_tag_table(buf);
+	GtkTextTag* tag = gtk_text_tag_table_lookup(table, "user-font");
+
+	GValue wrapped_desc = G_VALUE_INIT;
+	g_value_init(&wrapped_desc, PANGO_TYPE_FONT_DESCRIPTION);
+	g_value_set_boxed(&wrapped_desc, desc);
+	g_object_set_property(G_OBJECT(tag), "font-desc", &wrapped_desc);
+
+	/*GtkTextIter start,end;
+	gtk_text_buffer_get_start_iter(buf, &start);
+	gtk_text_buffer_get_end_iter(buf, &end);
+
+	//gtk_text_buffer_remove_tag(GtkTextBuffer *buffer, GtkTextTag *tag, const GtkTextIter *start, const GtkTextIter *end)
+	gtk_text_buffer_apply_tag_by_name(buf, "user-font", &start, &end);*/
+}
+
 static gboolean create_chapter_content_view_regex_match_eval(const GMatchInfo* match, GString* result, gpointer) {
 	gchar* matched = g_match_info_fetch(match, 0);
 	gsize len = g_utf8_strlen(matched, -1);
@@ -461,6 +500,7 @@ static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar*
 	gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 32);
 	gtk_text_view_set_bottom_margin(GTK_TEXT_VIEW(view), 32);
 	GtkTextBuffer* buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
+	GtkTextTag* tag = gtk_text_buffer_create_tag(buf, "user-font", NULL);
 
 
 	gchar* lord_regex = NULL;
@@ -510,6 +550,13 @@ static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar*
 			gtk_text_buffer_insert(buf, &end, verses[i], -1);
 	}
 
+	GtkTextIter start;
+	gtk_text_buffer_get_start_iter(buf, &start);
+	gtk_text_buffer_get_end_iter(buf, &end);
+	//gtk_text_buffer_remove_tag(GtkTextBuffer *buffer, GtkTextTag *tag, const GtkTextIter *start, const GtkTextIter *end)
+	gtk_text_buffer_apply_tag(buf, tag, &start, &end);
+
+	create_chapter_content_view_apply_userfont(self, GTK_TEXT_VIEW(view));
 	return view;
 }
 
@@ -538,4 +585,5 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	adw_leaflet_navigate(priv->main, ADW_NAVIGATION_DIRECTION_FORWARD);
 
 	priv->active_chapter = chapter;
+	priv->current_view = GTK_TEXT_VIEW(chapterview);
 }

@@ -27,6 +27,10 @@
 		</key>
 		<!-- end bible state -->
 		<!-- begin preferences -->
+		<key name="font" type="s">
+			<default>"Serif 12"</default>
+			<summary>Font that will be used for the content view</summary>
+		</key>
 		<key name="small-caps" type="a{ss}">
 			<default>{
 				"de": "HERRN?",

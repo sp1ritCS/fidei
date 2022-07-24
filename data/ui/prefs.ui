@@ -3,13 +3,42 @@
 	<template class="FideiPreferences" parent="AdwPreferencesWindow">
 		<child>
 			<object class="AdwPreferencesPage">
-				<property name="title">Lord presentation</property>
+				<property name="title" translatable="yes">General</property>
+				<property name="icon-name">emblem-system-symbolic</property>
+				<property name="name">general</property>
+				<child>
+					<object class="AdwPreferencesGroup">
+						<property name="title" translatable="yes">Content</property>
+						<property name="description" translatable="yes">Change the apperance of the content view</property>
+						<child>
+							<object class="AdwActionRow">
+								<property name="title" translatable="yes">Font</property>
+								<property name="subtitle" translatable="yes">Change font size and title</property>
+								<property name="activatable-widget">font_btn</property>
+								<child type="suffix">
+									<object class="GtkFontButton" id="font_btn">
+										<property name="hexpand">true</property>
+										<property name="valign">center</property>
+										<property name="modal">true</property>
+										<property name="use-font">true</property>
+										<property name="use-size">false</property>
+									</object>
+								</child>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+		<child>
+			<object class="AdwPreferencesPage">
+				<property name="title" translatable="yes">Lord presentation</property>
 				<property name="icon-name">format-text-direction-ltr-symbolic</property>
 				<property name="name">lord</property>
 				<child>
 					<object class="AdwPreferencesGroup">
-						<property name="title">Small caps</property>
-						<property name="description">Configure string matches that will convert to small caps</property>
+						<property name="title" translatable="yes">Small caps</property>
+						<property name="description" translatable="yes">Configure string matches that will convert to small caps</property>
 						<child>
 							<object class="AdwBin" id="smallcaps_bin"/>
 						</child>
