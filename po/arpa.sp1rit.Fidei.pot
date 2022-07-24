@@ -1,0 +1,198 @@
+# FIDEI GETTEXT TRANSLATION TEMPLATE.
+# Copyright (C) 2022 Florian "sp1rit" <sp1rit@national.shitposting.agency>
+# This file is distributed under the same license as Fidei.
+# Florian "sp1rit" <sp1rit@national.shitposting.agency>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: arpa.sp1rit.Fidei 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-25 00:32+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app.c:25
+#, c-format
+msgid "Failure creating directory: %s\n"
+msgstr ""
+
+#: src/app.c:32
+#, c-format
+msgid "Failure opening directory: %s\n"
+msgstr ""
+
+#: src/app.c:43
+#, c-format
+msgid "Failure acessing file: %s\n"
+msgstr ""
+
+#: src/bible.c:405
+#, c-format
+msgid "Invalid vref found on caption: %s\n"
+msgstr ""
+
+#: src/fidei.c:154
+msgid "Take back your faith"
+msgstr ""
+
+#: src/fidei.c:156
+msgid "Copyright (c) 2022 Florian \"sp1rit\" and contributors"
+msgstr ""
+
+#: src/fidei.c:204
+#, c-format
+msgid "Failed querying launch application: %s\n"
+msgstr ""
+
+#: src/fidei.c:216
+#, c-format
+msgid "Failed launching application: %s\n"
+msgstr ""
+
+#: src/fidei.c:378
+msgid "Property bibles of Fidei.AppWindow can only be set once"
+msgstr ""
+
+#: src/fidei.c:392
+msgid "No bibles found on your system"
+msgstr ""
+
+#: src/preferences.c:161
+msgid "Add language"
+msgstr ""
+
+#: src/preferences.c:202
+msgid "Regular Expression"
+msgstr ""
+
+#: src/preferences.c:215
+msgid "Remove language"
+msgstr ""
+
+#: src/preferences.c:247
+msgid "Property settings of Fidei.Preferences can only be set once"
+msgstr ""
+
+#: data/ui/fidei.ui:6
+msgid "Switch bible"
+msgstr ""
+
+#: data/ui/fidei.ui:12
+msgid "Preferences"
+msgstr ""
+
+#: data/ui/fidei.ui:16
+msgid "About Fidei"
+msgstr ""
+
+#: data/ui/fidei.ui:70
+msgid "Download more"
+msgstr ""
+
+#: data/ui/fidei.ui:80
+msgid "Open directory"
+msgstr ""
+
+#: data/ui/fidei.ui:263
+msgid "Welcome to Fidei!"
+msgstr ""
+
+#: data/ui/fidei.ui:264
+msgid "Pick a book from the sidebar on the left"
+msgstr ""
+
+#: data/ui/prefs.ui:6
+msgid "General"
+msgstr ""
+
+#: data/ui/prefs.ui:11
+msgid "Content"
+msgstr ""
+
+#: data/ui/prefs.ui:12
+msgid "Change the apperance of the content view"
+msgstr ""
+
+#: data/ui/prefs.ui:15
+msgid "Font"
+msgstr ""
+
+#: data/ui/prefs.ui:16
+msgid "Change font size and title"
+msgstr ""
+
+#: data/ui/prefs.ui:35
+msgid "Presentation of »Lord«"
+msgstr ""
+
+#: data/ui/prefs.ui:40
+msgid "Small caps"
+msgstr ""
+
+#: data/ui/prefs.ui:41
+msgid "Configure string matches that will convert to small caps"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.desktop:3 data/arpa.sp1rit.Fidei.metainfo.xml:5
+msgid "Fidei"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.desktop:4
+msgid "Bible"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.desktop:13
+msgid "Bible;Luther;King James;"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:6
+msgid "Bible reader"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:8
+msgid ""
+"Fidei is an offline GTK bible reader for GNOME making use of modern "
+"technologies like libadwaita."
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:9
+msgid "Features include:"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:11
+msgid "Reads bibles with in Zefania XML format"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:12
+msgid "Caption/Heading support"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:13
+msgid "Support for proper capitalization (small-caps) of »Lord«"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:16
+msgid "Florian \"sp1rit\""
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:53
+msgid "The initial screen, showing available bibles on the system"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:57
+msgid "Fidei in desktop mode, showing Mark 10"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:61
+msgid "Fidei in mobile mode, showing Genesis 3"
+msgstr ""
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:90
+msgid "Initial release"
+msgstr ""

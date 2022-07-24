@@ -32,7 +32,7 @@
 		</child>
 		<child>
 			<object class="AdwPreferencesPage">
-				<property name="title" translatable="yes">Lord presentation</property>
+				<property name="title" translatable="yes">Presentation of »Lord«</property>
 				<property name="icon-name">format-text-direction-ltr-symbolic</property>
 				<property name="name">lord</property>
 				<child>

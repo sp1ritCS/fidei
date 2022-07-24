@@ -13,7 +13,11 @@ fidei = executable('fidei', [
 		'preferences.c',
 		'utils.c'
 	], fidei_res,
-	c_args: ['-DFIDEI_VERSION="@0@"'.format(meson.project_version())],
+	c_args: [
+		'-DFIDEI_VERSION="@0@"'.format(meson.project_version()),
+		'-DGETTEXT_PACKAGE="@0@"'.format(app_id),
+		'-DPACKAGE_LOCALE_DIR="@0@"'.format(join_paths(get_option('prefix'), get_option('localedir'))),
+	],
 	dependencies: [
 		dependency('gtk4'),
 		dependency('libadwaita-1'),

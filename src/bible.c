@@ -1,4 +1,7 @@
 #include "bible.h"
+
+#include <libintl.h>
+#define _t(String) gettext (String)
 #include <libxml/xmlreader.h>
 
 
@@ -399,7 +402,7 @@ found_chapter: {
 				if (versref && versref < num_verses)
 					verses_i[i].caption = (gchar*)xmlNodeGetContent(cur);
 				else
-					g_warning("Invalid vref found on caption: %s", vers);
+					g_warning(_t("Invalid vref found on caption: %s\n"), vers);
 				xmlFree(vers);
 			}
 		}

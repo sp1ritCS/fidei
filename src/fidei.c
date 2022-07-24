@@ -3,6 +3,9 @@
 #include "preferences.h"
 #include "utils.h"
 
+#include <libintl.h>
+#define _t(String) gettext (String)
+
 gchar* fidei_bookitem_factory_get_title(GtkListItem*, FideiBibleBook* book) {
 	if (!FIDEI_IS_BIBLEBOOK(book))
 		return NULL;
@@ -148,9 +151,9 @@ static void open_aboutwin_activated(GSimpleAction*, GVariant*, FideiAppWindow* s
 	GtkWidget* diag = gtk_about_dialog_new();
 
 	gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(diag), "Fidei");
-	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(diag), "Take back your faith");
+	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(diag), _t("Take back your faith"));
 	gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(diag), "arpa.sp1rit.Fidei");
-	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(diag), "Copyright (c) 2022 Florian \"sp1rit\" and contributors");
+	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(diag), _t("Copyright (c) 2022 Florian \"sp1rit\" and contributors"));
 	gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(diag), GTK_LICENSE_AGPL_3_0);
 #ifdef FIDEI_VERSION
 	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(diag), FIDEI_VERSION);
@@ -198,7 +201,7 @@ static void open_gfile(GFile* file) {
 	GError* err = NULL;
 	GAppInfo* app = g_file_query_default_handler(file, NULL, &err);
 	if (err) {
-		g_critical("Failed querying launch application: %s\n", err->message);
+		g_critical(_t("Failed querying launch application: %s\n"), err->message);
 		g_error_free(err);
 		return;
 	}
@@ -210,7 +213,7 @@ static void open_gfile(GFile* file) {
 
 	g_app_info_launch(app, files, NULL, &err);
 	if (err) {
-		g_critical("Failed launching application: %s\n", err->message);
+		g_critical(_t("Failed launching application: %s\n"), err->message);
 		g_error_free(err);
 	}
 
@@ -372,7 +375,7 @@ void fidei_appwindow_set_bibles(FideiAppWindow* self, GListModel* bibles) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 
 	if (priv->bibles) {
-		g_critical("Fidei.AppWindow bibles property can only be set once");
+		g_critical(_t("Property bibles of Fidei.AppWindow can only be set once"));
 		return;
 	}
 
@@ -386,7 +389,7 @@ void fidei_appwindow_set_bibles(FideiAppWindow* self, GListModel* bibles) {
 		gtk_widget_set_valign(child, GTK_ALIGN_CENTER);
 		gtk_widget_add_css_class(child, "header");
 
-		GtkWidget* label = gtk_label_new("No bibles found on your system");
+		GtkWidget* label = gtk_label_new(_t("No bibles found on your system"));
 		gtk_widget_add_css_class(label, "title");
 		gtk_label_set_xalign(GTK_LABEL(label), 0.f);
 

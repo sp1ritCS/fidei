@@ -1,0 +1,2 @@
+option('gettext', type : 'feature', description: 'Build with localization support')
+option('libicu', type : 'feature', description: 'Localization of language strings')

@@ -1,6 +1,7 @@
 #include "utils.h"
 
 #ifdef HAS_LIBICU
+#include <libintl.h>
 #include <unicode/uloc.h>
 
 gchar* miso693_to_human(const gchar* iso693) {
@@ -9,7 +10,7 @@ gchar* miso693_to_human(const gchar* iso693) {
 
 	UChar wide_language_name[0x7F];
 	UErrorCode status = U_ZERO_ERROR;
-	gint32 len = uloc_getDisplayName(iso693, "en_US", wide_language_name, 0x7F, &status);
+	gint32 len = uloc_getDisplayName(iso693, NULL, wide_language_name, 0x7F, &status);
 	if (len <= 0)
 		return NULL;
 

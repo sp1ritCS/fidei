@@ -1,6 +1,9 @@
 #include "preferences.h"
 #include "utils.h"
 
+#include <libintl.h>
+#define _t(String) gettext (String)
+
 typedef struct {
 	GSettings* settings;
 
@@ -155,7 +158,7 @@ static GtkWidget* fidei_preferences_build_addlangbox(FideiPreferences* self) {
 	FideiPreferencesPrivate* priv = fidei_preferences_get_instance_private(self);
 
 	GtkWidget* row = adw_action_row_new();
-	adw_preferences_row_set_title(ADW_PREFERENCES_ROW(row), "Add language");
+	adw_preferences_row_set_title(ADW_PREFERENCES_ROW(row), _t("Add language"));
 
 	GtkWidget* lang = gtk_entry_new();
 	gtk_widget_set_hexpand(lang, TRUE);
@@ -196,7 +199,7 @@ static void fidei_preferences_build_smbox(FideiPreferences* self) {
 		g_free(lang_ui);
 
 		GtkWidget* actionbox = adw_action_row_new();
-		adw_preferences_row_set_title(ADW_PREFERENCES_ROW(actionbox), "Regex");
+		adw_preferences_row_set_title(ADW_PREFERENCES_ROW(actionbox), _t("Regular Expression"));
 		GtkWidget* action = gtk_entry_new();
 		gtk_widget_set_hexpand(action, TRUE);
 		gtk_widget_set_valign(action, GTK_ALIGN_CENTER);
@@ -209,7 +212,7 @@ static void fidei_preferences_build_smbox(FideiPreferences* self) {
 		adw_expander_row_add_row(ADW_EXPANDER_ROW(row), actionbox);
 
 		GtkWidget* btnbox = adw_action_row_new();
-		adw_preferences_row_set_title(ADW_PREFERENCES_ROW(btnbox), "Remove language");
+		adw_preferences_row_set_title(ADW_PREFERENCES_ROW(btnbox), _t("Remove language"));
 		GtkWidget* delete_lang_btn = gtk_button_new();
 		gtk_button_set_icon_name(GTK_BUTTON(delete_lang_btn), "user-trash-symbolic");
 		gtk_widget_set_valign(delete_lang_btn, GTK_ALIGN_CENTER);
@@ -241,7 +244,7 @@ void fidei_preferences_set_settings(FideiPreferences* self, GSettings* settings)
 
 	FideiPreferencesPrivate* priv = fidei_preferences_get_instance_private(self);
 	if (priv->settings) {
-		g_critical("Property settings of Fidei.Preferences can only be set once");
+		g_critical(_t("Property settings of Fidei.Preferences can only be set once"));
 		return;
 	}
 
