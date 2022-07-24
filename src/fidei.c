@@ -378,6 +378,24 @@ void fidei_appwindow_set_bibles(FideiAppWindow* self, GListModel* bibles) {
 
 	priv->bibles = bibles;
 
+	if (g_list_model_get_n_items(priv->bibles) == 0) {
+		GtkWidget* empty_info = gtk_list_box_row_new();
+		gtk_widget_set_sensitive(empty_info, FALSE);
+
+		GtkWidget* child = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
+		gtk_widget_set_valign(child, GTK_ALIGN_CENTER);
+		gtk_widget_add_css_class(child, "header");
+
+		GtkWidget* label = gtk_label_new("No bibles found on your system");
+		gtk_widget_add_css_class(label, "title");
+		gtk_label_set_xalign(GTK_LABEL(label), 0.f);
+
+		gtk_box_append(GTK_BOX(child), label);
+		gtk_list_box_row_set_child(GTK_LIST_BOX_ROW(empty_info), child);
+
+		gtk_list_box_append(GTK_LIST_BOX(priv->bible_selector), empty_info);
+	}
+
 	gchar* last_active = g_settings_get_string(priv->settings, "open-bible");
 
 	for (guint i = 0; i < g_list_model_get_n_items(priv->bibles); i++) {
@@ -408,6 +426,7 @@ FideiBible* fidei_appwindow_get_active_bible(FideiAppWindow* self) {
 }
 void fidei_appwindow_set_active_bible(FideiAppWindow* self, FideiBible* bible) {
 	g_return_if_fail(FIDEI_IS_APPWINDOW(self));
+	g_return_if_fail(FIDEI_IS_BIBLE(bible));
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 
 	gtk_stack_set_visible_child(priv->initializer_stack, GTK_WIDGET(priv->main));
