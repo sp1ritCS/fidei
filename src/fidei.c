@@ -148,6 +148,7 @@ static void open_aboutwin_activated(GSimpleAction*, GVariant*, FideiAppWindow* s
 
 	gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(diag), "Fidei");
 	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(diag), "Take back your faith");
+	gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(diag), "arpa.sp1rit.Fidei");
 	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(diag), "Copyright (c) 2022 Florian \"sp1rit\" and contributors");
 	gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(diag), GTK_LICENSE_AGPL_3_0);
 	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(diag), "0.1.0");

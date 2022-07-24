@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Fidei
+GenericName=Bible
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=arpa.sp1rit.Fidei
+Exec=fidei
+Terminal=false
+Type=Application
+# StartupNotify=true
+Categories=GNOME;GTK;
+# Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+Keywords=Bible;Luther;King James;
+# Translators: Do NOT translate or transliterate this text (these are enum types)!
+X-Purism-FormFactor=Workstation;Mobile;

@@ -1,0 +1,25 @@
+<svg width="128" height="128" version="1.1" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="b" x1="384" x2="416" y1="120" y2="120" gradientTransform="matrix(1.125 0 0 1 -652 624.12)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#f6f5f4" offset="0"/>
+   <stop stop-color="#f6f5f4" offset=".5"/>
+   <stop stop-color="#c0bfbc" offset="1"/>
+  </linearGradient>
+  <linearGradient id="a" x1="-109.64" x2="-104.33" y1="60.738" y2="87.213" gradientTransform="translate(1.4815)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#e28127" offset="0"/>
+   <stop stop-color="#daa520" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g transform="matrix(1.35 0 0 1.3654 208.37 -64.314)" enable-background="new">
+  <g transform="matrix(.17373 0 0 .17373 -44.433 -19.828)" enable-background="new">
+   <path d="m-549.12 540v368h340.77c20.976 0 37.863-14.272 37.863-32v-304c0-17.728-16.887-32-37.863-32z" enable-background="new" fill="#110f12" style="paint-order:normal"/>
+   <path d="m-535 528.11v368h328.06c20.194 0 36.451-14.272 36.451-32v-304c0-17.728-16.257-32-36.451-32z" enable-background="new" fill="#1c1920" style="paint-order:normal"/>
+   <path d="m-535 604.12v280h315c19.944 0 36-14.272 36-32v-216c0-17.728-16.056-32-36-32z" enable-background="new" fill="url(#b)" style="paint-order:normal"/>
+   <path d="m-544 532.12v264h336.16c20.693 0 37.351-14.272 37.351-32v-200c0-17.728-16.659-32-37.351-32z" enable-background="new" fill="#110f12" style="paint-order:normal"/>
+   <path d="m-549.12 402.12v64.667 256 63.333h340.77c20.976 0 37.863-19.029 37.863-42.667v-20.667-256-22c0-23.637-16.887-42.667-37.863-42.667z" enable-background="new" fill="#1c1920" style="paint-order:normal"/>
+   <path d="m-535 402.12h9v384h-9z" fill="#fff" opacity=".3" style="paint-order:normal"/>
+  </g>
+  <path d="m-113.46 131.06h22.367m-27.529-2.7322h14.087m-7.2047-2.7322h27.529m-32.69-2.7322h27.529" enable-background="new" opacity=".1" stroke="#000" stroke-linecap="round" stroke-width="1.5331"/>
+  <path d="m-108.62 60.577v6.2495h-6.321v6.2495h6.321v15.624h6.321v-15.624h6.321v-6.2495h-6.321v-6.2495z" fill="url(#a)" style="paint-order:stroke fill markers"/>
+ </g>
+</svg>
