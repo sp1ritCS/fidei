@@ -7,6 +7,13 @@
 <p>Bible reader for GNOME</p>
 </div>
 
+## Screenshots
+
+![initial screen, bible picker](screenshots/init-picker.png)
+
+![fidei showing Mark 10](screenshots/desktop.png)
+
+
 ## Dependencies
 
 | Library                                                        | pkg-config                     | Forge / Repository     |
