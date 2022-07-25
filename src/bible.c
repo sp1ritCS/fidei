@@ -399,7 +399,7 @@ found_chapter: {
 			xmlChar* vers = xmlGetProp(cur, (const xmlChar*)"vref");
 			if (vers) {
 				gint64 versref = g_ascii_strtoull((const gchar*)vers, NULL, 10);
-				if (versref && versref < num_verses)
+				if (versref && versref <= num_verses)
 					verses_i[i].caption = (gchar*)xmlNodeGetContent(cur);
 				else
 					g_warning(_t("Invalid vref found on caption: %s\n"), vers);

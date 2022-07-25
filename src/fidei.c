@@ -555,6 +555,9 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->chapter_prev_navbtn), (gboolean)chapter);
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->chapter_fwd_navbtn), chapter+1 < fidei_biblebook_get_num_chapters(priv->active_biblebook));
 
+	GtkAdjustment* vadj = gtk_scrolled_window_get_vadjustment(priv->content);
+	gtk_adjustment_set_value(vadj, 0.0);
+
 	adw_leaflet_navigate(priv->main, ADW_NAVIGATION_DIRECTION_FORWARD);
 
 	priv->active_chapter = chapter;
