@@ -1,4 +1,6 @@
 #include "fidei.h"
+#include "about.h"
+#include "bible_item.h"
 #include "num.h"
 #include "preferences.h"
 #include "utils.h"
@@ -141,30 +143,12 @@ static void navigate_picker_activated(GSimpleAction*, GVariant*, FideiAppWindow*
 
 	g_settings_reset(priv->settings, "open-bible");
 	gtk_stack_set_visible_child(priv->initializer_stack, GTK_WIDGET(priv->bibleselect_scroll));
+	adw_window_title_set_title(priv->title, "Fidei");
+	adw_window_title_set_subtitle(priv->title, NULL);
 }
 
-const gchar* authors[] = {
-	"Florian \"sp1rit\" <sp1rit@national.shitposting.agency>",
-	NULL
-};
 static void open_aboutwin_activated(GSimpleAction*, GVariant*, FideiAppWindow* self) {
-	GtkWidget* diag = gtk_about_dialog_new();
-
-	gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(diag), "Fidei");
-	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(diag), _t("Take back your faith"));
-	gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(diag), "arpa.sp1rit.Fidei");
-	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(diag), _t("Copyright (c) 2022 Florian \"sp1rit\" and contributors"));
-	gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(diag), GTK_LICENSE_AGPL_3_0);
-#ifdef FIDEI_VERSION
-	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(diag), FIDEI_VERSION);
-#endif
-	gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(diag), "https://github.com/sp1ritCS/fidei");
-	gtk_about_dialog_set_website_label(GTK_ABOUT_DIALOG(diag), "github.com/sp1ritCS/fidei");
-	gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(diag), authors);
-
-	gtk_window_set_transient_for(GTK_WINDOW(diag), GTK_WINDOW(self));
-	gtk_window_set_modal(GTK_WINDOW(diag), TRUE);
-	gtk_widget_show(diag);
+	gtk_widget_show(fidei_get_aboutdiag(GTK_WINDOW(self)));
 }
 
 static void open_preferences_activated(GSimpleAction*, GVariant*, FideiAppWindow* self) {
@@ -195,7 +179,7 @@ static void fidei_appwindow_font_changed(GSettings*, gchar* key, FideiAppWindow*
 }
 
 static void bible_selector_clicked(GtkListBox*, GtkListBoxRow* row, FideiAppWindow* self) {
-	fidei_appwindow_set_active_bible(self, g_object_get_data(G_OBJECT(row), "bible"));
+	fidei_appwindow_set_active_bible(self, fidei_biblepicker_item_row_get_bible(FIDEI_BIBLEPICKER_ITEM_ROW(row)));
 }
 static void open_gfile(GFile* file) {
 	GError* err = NULL;
@@ -326,44 +310,6 @@ GtkWidget* fidei_appwindow_new(GtkApplication* app, GListModel* bibles) {
 	return g_object_new(FIDEI_TYPE_APPWINDOW, "application", app, "bibles", bibles, NULL);
 }
 
-static GtkWidget* create_picker_item(const gchar* title, const gchar* lang, const gchar* publisher) {
-	GtkWidget* item = gtk_list_box_row_new();
-
-	GtkWidget* child = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
-	gtk_widget_set_valign(child, GTK_ALIGN_CENTER);
-	gtk_widget_add_css_class(child, "header");
-
-	GtkWidget* titlebox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_widget_set_valign(titlebox, GTK_ALIGN_CENTER);
-	gtk_widget_set_hexpand(titlebox, TRUE);
-	gtk_widget_add_css_class(titlebox, "title");
-
-	GtkWidget* titlew = gtk_label_new(title);
-	gtk_widget_add_css_class(titlew, "title");
-	gtk_label_set_single_line_mode(GTK_LABEL(titlew), TRUE);
-	gtk_label_set_xalign(GTK_LABEL(titlew), 0.f);
-
-	gchar* lang_ui = miso693_to_human_same(lang);
-	gchar* subtitle = g_strdup_printf("%s | %s", lang_ui, publisher);
-	g_free(lang_ui);
-	GtkWidget* subtitlew = gtk_label_new(subtitle);
-	g_free(subtitle);
-	gtk_widget_add_css_class(subtitlew, "subtitle");
-	gtk_label_set_single_line_mode(GTK_LABEL(subtitlew), TRUE);
-	gtk_label_set_xalign(GTK_LABEL(subtitlew), 0.f);
-
-	gtk_box_append(GTK_BOX(titlebox), titlew);
-	gtk_box_append(GTK_BOX(titlebox), subtitlew);
-
-	GtkWidget* arrow = gtk_image_new_from_icon_name("go-next-symbolic");
-
-	gtk_box_append(GTK_BOX(child), titlebox);
-	gtk_box_append(GTK_BOX(child), arrow);
-
-	gtk_list_box_row_set_child(GTK_LIST_BOX_ROW(item), child);
-
-	return item;
-}
 
 GListModel* fidei_appwindow_get_bibles(FideiAppWindow* self) {
 	g_return_val_if_fail(FIDEI_IS_APPWINDOW(self), NULL);
@@ -382,19 +328,8 @@ void fidei_appwindow_set_bibles(FideiAppWindow* self, GListModel* bibles) {
 	priv->bibles = bibles;
 
 	if (g_list_model_get_n_items(priv->bibles) == 0) {
-		GtkWidget* empty_info = gtk_list_box_row_new();
-		gtk_widget_set_sensitive(empty_info, FALSE);
-
-		GtkWidget* child = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
-		gtk_widget_set_valign(child, GTK_ALIGN_CENTER);
-		gtk_widget_add_css_class(child, "header");
-
-		GtkWidget* label = gtk_label_new(_t("No bibles found on your system"));
-		gtk_widget_add_css_class(label, "title");
-		gtk_label_set_xalign(GTK_LABEL(label), 0.f);
-
-		gtk_box_append(GTK_BOX(child), label);
-		gtk_list_box_row_set_child(GTK_LIST_BOX_ROW(empty_info), child);
+		GtkBuilder* bld = gtk_builder_new_from_resource("/arpa/sp1rit/Fidei/ui/bible_items_empty.ui");
+		GtkWidget* empty_info = GTK_WIDGET(gtk_builder_get_object(bld, "no_bibles_found_row"));
 
 		gtk_list_box_append(GTK_LIST_BOX(priv->bible_selector), empty_info);
 	}
@@ -402,17 +337,12 @@ void fidei_appwindow_set_bibles(FideiAppWindow* self, GListModel* bibles) {
 	gchar* last_active = g_settings_get_string(priv->settings, "open-bible");
 
 	for (guint i = 0; i < g_list_model_get_n_items(priv->bibles); i++) {
-		FideiBible* state = FIDEI_BIBLE(g_list_model_get_object(priv->bibles, i));
+		FideiBible* bible = FIDEI_BIBLE(g_list_model_get_object(priv->bibles, i));
 
-		if ((last_active && *last_active) && g_strcmp0(fidei_bible_get_identifier(state), last_active) == 0)
-			fidei_appwindow_set_active_bible(self, state);
+		if ((last_active && *last_active) && g_strcmp0(fidei_bible_get_identifier(bible), last_active) == 0)
+			fidei_appwindow_set_active_bible(self, bible);
 
-		GtkWidget* item = create_picker_item(
-			fidei_bible_get_title(state),
-			fidei_bible_get_lang(state),
-			fidei_bible_get_publisher(state)
-		);
-		g_object_set_data(G_OBJECT(item), "bible", state);
+		GtkWidget* item = fidei_biblepicker_item_row_new(bible);
 		gtk_list_box_append(GTK_LIST_BOX(priv->bible_selector), item);
 	}
 

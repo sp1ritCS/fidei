@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<object class="GtkListBoxRow" id="no_bibles_found_row">
+		<property name="sensitive">false</property>
+		<property name="child">
+			<object class="GtkBox">
+				<property name="orientation">horizontal</property>
+				<property name="spacing">12</property>
+				<property name="valign">center</property>
+				<child>
+					<object class="GtkLabel">
+						<property name="label" translatable="yes">No bibles found on your system</property>
+						<style>
+							<class name="title"/>
+						</style>
+					</object>
+				</child>
+				<style>
+					<class name="header"/>
+				</style>
+			</object>
+		</property>
+	</object>
+</interface>

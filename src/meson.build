@@ -9,6 +9,8 @@ fidei = executable('fidei', [
 		'app.c',
 		'fidei.c',
 		'bible.c',
+		'about.c',
+		'bible_item.c',
 		'num.c',
 		'preferences.c',
 		'utils.c'

@@ -2,6 +2,9 @@
 <gresources>
 	<gresource prefix="/arpa/sp1rit/Fidei">
 		<file alias="style.css">fidei.css</file>
+		<file preprocess="xml-stripblanks">ui/about.ui</file>
+		<file preprocess="xml-stripblanks">ui/bible_item.ui</file>
+		<file preprocess="xml-stripblanks">ui/bible_items_empty.ui</file>
 		<file preprocess="xml-stripblanks">ui/fidei.ui</file>
 		<file preprocess="xml-stripblanks">ui/factory_bookitem.ui</file>
 		<file preprocess="xml-stripblanks">ui/factory_chapteritem.ui</file>
