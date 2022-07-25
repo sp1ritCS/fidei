@@ -1,2 +1,4 @@
 option('gettext', type : 'feature', description: 'Build with localization support')
 option('libicu', type : 'feature', description: 'Localization of language strings')
+option('sandboxed', type: 'boolean', value: false, description: 'Build with XDG-Portal support (UNIX only)')
+option('xdp_openuri_location', type: 'string', value: '/usr/share/dbus-1/interfaces/org.freedesktop.portal.OpenURI.xml', description: 'Path to the org.freedesktop.portal.OpenURI.xml interface definition required to make use of portals. Only affects build when sandboxed is set to true')

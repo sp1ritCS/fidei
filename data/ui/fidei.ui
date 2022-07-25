@@ -20,255 +20,261 @@
 	</menu>
 	<template class="FideiAppWindow" parent="AdwApplicationWindow">
 		<property name="content">
-			<object class="GtkBox">
-				<property name="orientation">vertical</property>
-				<child>
-					<object class="AdwHeaderBar">
-						<property name="title-widget">
-							<object class="AdwWindowTitle" id="title">
-								<property name="title">Fidei</property>
-							</object>
-						</property>
-						<child type="end">
-							<object class="GtkMenuButton" id="menu_btn">
-								<property name="menu_model">fidei_menu</property>
-								<property name="icon_name">open-menu-symbolic</property>
+			<object class="AdwToastOverlay" id="toasts">
+				<property name="child">
+
+
+					<object class="GtkBox">
+						<property name="orientation">vertical</property>
+						<child>
+							<object class="AdwHeaderBar">
+								<property name="title-widget">
+									<object class="AdwWindowTitle" id="title">
+										<property name="title">Fidei</property>
+									</object>
+								</property>
+								<child type="end">
+									<object class="GtkMenuButton" id="menu_btn">
+										<property name="menu_model">fidei_menu</property>
+										<property name="icon_name">open-menu-symbolic</property>
+									</object>
+								</child>
 							</object>
 						</child>
-					</object>
-				</child>
-				<child>
-					<object class="GtkStack" id="initializer_stack">
-						<property name="transition_type">slide-left-right</property>
-						<property name="hexpand">true</property>
-						<property name="vexpand">true</property>
 						<child>
-							<object class="GtkScrolledWindow" id="bibleselect_scroll">
-								<property name="hscrollbar_policy">never</property>
-								<property name="child">
-									<object class="AdwClamp">
-										<property name="valign">center</property>
-										<property name="margin-start">12</property>
-										<property name="margin-end">12</property>
+							<object class="GtkStack" id="initializer_stack">
+								<property name="transition_type">slide-left-right</property>
+								<property name="hexpand">true</property>
+								<property name="vexpand">true</property>
+								<child>
+									<object class="GtkScrolledWindow" id="bibleselect_scroll">
+										<property name="hscrollbar_policy">never</property>
 										<property name="child">
-											<object class="GtkBox">
-												<property name="orientation">vertical</property>
-												<property name="spacing">12</property>
-												<child>
-													<object class="GtkListBox" id="bible_selector">
-														<property name="selection_mode">none</property>
-														<style>
-															<class name="boxed-list" />
-														</style>
-													</object>
-												</child>
-												<child>
+											<object class="AdwClamp">
+												<property name="valign">center</property>
+												<property name="margin-start">12</property>
+												<property name="margin-end">12</property>
+												<property name="child">
 													<object class="GtkBox">
-														<property name="orientation">horizontal</property>
+														<property name="orientation">vertical</property>
+														<property name="spacing">12</property>
 														<child>
-															<object class="GtkButton" id="browser_btn">
-																<property name="label" translatable="yes">Download more</property>
-																<property name="hexpand">true</property>
-																<property name="halign">start</property>
+															<object class="GtkListBox" id="bible_selector">
+																<property name="selection_mode">none</property>
 																<style>
-																	<class name="flat" />
+																	<class name="boxed-list" />
 																</style>
 															</object>
 														</child>
 														<child>
-															<object class="GtkButton" id="bibledir_btn">
-																<property name="label" translatable="yes">Open directory</property>
+															<object class="GtkBox">
+																<property name="orientation">horizontal</property>
+																<child>
+																	<object class="GtkButton" id="browser_btn">
+																		<property name="label" translatable="yes">Download more</property>
+																		<property name="hexpand">true</property>
+																		<property name="halign">start</property>
+																		<style>
+																			<class name="flat" />
+																		</style>
+																	</object>
+																</child>
+																<child>
+																	<object class="GtkButton" id="bibledir_btn">
+																		<property name="label" translatable="yes">Open directory</property>
+																		<style>
+																			<class name="suggested-action" />
+																		</style>
+																	</object>
+																</child>
+															</object>
+														</child>
+													</object>
+												</property>
+											</object>
+										</property>
+									</object>
+								</child>
+								<child>
+									<object class="AdwLeaflet" id="main">
+										<property name="can-navigate-back">true</property>
+										<property name="can-navigate-forward">true</property>
+										<child>
+											<object class="AdwLeaflet" id="selector_stack">
+												<property name="can-unfold">false</property>
+												<property name="can-navigate-back">true</property>
+												<property name="can-navigate-forward">false</property>
+												<property name="transition-type">ADW_LEAFLET_TRANSITION_TYPE_SLIDE</property>
+												<child>
+													<object class="GtkScrolledWindow" id="booksel_scroll">
+														<property name="hscrollbar_policy">never</property>
+														<property name="child">
+															<object class="AdwClampScrollable">
+																<property name="margin-end">8</property>
+																<property name="child">
+																	<object class="GtkListView" id="book_selector">
+																		<property name="single-click-activate">true</property>
+																		<property name="factory">
+																			<object class="GtkBuilderListItemFactory">
+																				<property name="resource">/arpa/sp1rit/Fidei/ui/factory_bookitem.ui</property>
+																			</object>
+																		</property>
+																		<style>
+																			<class name="navigation-sidebar"/>
+																		</style>
+																	</object>
+																</property>
+															</object>
+														</property>
+													</object>
+												</child>
+												<child>
+													<object class="GtkBox" id="chaptersel_box">
+														<property name="orientation">vertical</property>
+														<child>
+															<object class="GtkButton" id="chapter_back_book_navbtn">
+																<property name="icon-name">go-previous-symbolic</property>
+																<property name="margin-top">8</property>
+																<property name="margin-start">8</property>
+																<property name="margin-end">12</property>
+																<property name="margin-bottom">8</property>
 																<style>
-																	<class name="suggested-action" />
+																	<class name="pill"/>
+																</style>
+															</object>
+														</child>
+														<child>
+															<object class="GtkSeparator">
+																<property name="orientation">horizontal</property>
+															</object>
+														</child>
+														<child>
+															<object class="GtkScrolledWindow">
+																<property name="width-request">187</property>
+																<property name="hscrollbar_policy">never</property>
+																<property name="vexpand">true</property>
+																<property name="child">
+																	<object class="AdwClampScrollable">
+																		<property name="margin-top">8</property>
+																		<property name="margin-start">8</property>
+																		<property name="margin-end">12</property>
+																		<property name="margin-bottom">8</property>
+																		<property name="child">
+																			<object class="GtkGridView" id="chapter_selector">
+																				<property name="single-click-activate">true</property>
+																				<property name="factory">
+																					<object class="GtkBuilderListItemFactory">
+																						<property name="resource">/arpa/sp1rit/Fidei/ui/factory_chapteritem.ui</property>
+																					</object>
+																				</property>
+																			</object>
+																		</property>
+																	</object>
+																</property>
+																<style>
+																	<class name="view"/>
 																</style>
 															</object>
 														</child>
 													</object>
 												</child>
 											</object>
-										</property>
-									</object>
-								</property>
-							</object>
-						</child>
-						<child>
-							<object class="AdwLeaflet" id="main">
-								<property name="can-navigate-back">true</property>
-								<property name="can-navigate-forward">true</property>
-								<child>
-									<object class="AdwLeaflet" id="selector_stack">
-										<property name="can-unfold">false</property>
-										<property name="can-navigate-back">true</property>
-										<property name="can-navigate-forward">false</property>
-										<property name="transition-type">ADW_LEAFLET_TRANSITION_TYPE_SLIDE</property>
+										</child>
 										<child>
-											<object class="GtkScrolledWindow" id="booksel_scroll">
-												<property name="hscrollbar_policy">never</property>
+											<object class="AdwLeafletPage">
+												<property name="navigatable">false</property>
 												<property name="child">
-													<object class="AdwClampScrollable">
-														<property name="margin-end">8</property>
-														<property name="child">
-															<object class="GtkListView" id="book_selector">
-																<property name="single-click-activate">true</property>
-																<property name="factory">
-																	<object class="GtkBuilderListItemFactory">
-																		<property name="resource">/arpa/sp1rit/Fidei/ui/factory_bookitem.ui</property>
-																	</object>
-																</property>
-																<style>
-																	<class name="navigation-sidebar"/>
-																</style>
-															</object>
-														</property>
-													</object>
+												<object class="GtkSeparator">
+													<property name="orientation">vertical</property>
+												</object>
 												</property>
 											</object>
 										</child>
 										<child>
-											<object class="GtkBox" id="chaptersel_box">
+											<object class="GtkBox">
 												<property name="orientation">vertical</property>
+												<property name="width-request">384</property>
 												<child>
-													<object class="GtkButton" id="chapter_back_book_navbtn">
-														<property name="icon-name">go-previous-symbolic</property>
-														<property name="margin-top">8</property>
-														<property name="margin-start">8</property>
-														<property name="margin-end">12</property>
-														<property name="margin-bottom">8</property>
-														<style>
-															<class name="pill"/>
-														</style>
+													<object class="GtkBox" id="content_actions">
+														<property name="orientation">horizontal</property>
+														<property name="visible">false</property> <!-- will be set to true once chapter has been opened. bound against seperator:visibe -->
+														<child>
+															<object class="GtkBox">
+																<property name="orientation">horizontal</property>
+																<property name="hexpand">true</property>
+																<property name="halign">start</property>
+																<property name="margin-top">8</property>
+																<property name="margin-start">8</property>
+																<property name="margin-end">8</property>
+																<property name="margin-bottom">8</property>
+																<child>
+																	<object class="GtkButton" id="leaflet_back_navbtn">
+																		<property name="icon-name">go-first-symbolic</property>
+																		<property name="visible"
+																			bind-source="main"
+																			bind-property="folded"
+																			bind-flags="sync-create"/>
+																		<style>
+																			<class name="pill"/>
+																		</style>
+																	</object>
+																</child>
+															</object>
+														</child>
+														<child>
+															<object class="GtkBox">
+																<property name="orientation">horizontal</property>
+																<property name="margin-top">8</property>
+																<property name="margin-start">8</property>
+																<property name="margin-end">8</property>
+																<property name="margin-bottom">8</property>
+																<child>
+																	<object class="GtkButton" id="chapter_prev_navbtn">
+																		<property name="icon-name">go-previous-symbolic</property>
+																		<style>
+																			<class name="pill"/>
+																		</style>
+																	</object>
+																</child>
+																<child>
+																	<object class="GtkButton" id="chapter_fwd_navbtn">
+																		<property name="icon-name">go-next-symbolic</property>
+																		<style>
+																			<class name="pill"/>
+																		</style>
+																	</object>
+																</child>
+																<style>
+																	<class name="linked"/>
+																</style>
+															</object>
+														</child>
 													</object>
 												</child>
 												<child>
 													<object class="GtkSeparator">
 														<property name="orientation">horizontal</property>
+														<property name="visible"
+																			bind-source="content_actions"
+																			bind-property="visible"
+																			bind-flags="sync-create|bidirectional"/>
 													</object>
 												</child>
 												<child>
-													<object class="GtkScrolledWindow">
-														<property name="width-request">187</property>
+													<object class="GtkScrolledWindow" id="content">
 														<property name="hscrollbar_policy">never</property>
 														<property name="vexpand">true</property>
 														<property name="child">
-															<object class="AdwClampScrollable">
-																<property name="margin-top">8</property>
-																<property name="margin-start">8</property>
-																<property name="margin-end">12</property>
-																<property name="margin-bottom">8</property>
-																<property name="child">
-																	<object class="GtkGridView" id="chapter_selector">
-																		<property name="single-click-activate">true</property>
-																		<property name="factory">
-																			<object class="GtkBuilderListItemFactory">
-																				<property name="resource">/arpa/sp1rit/Fidei/ui/factory_chapteritem.ui</property>
-																			</object>
-																		</property>
-																	</object>
-																</property>
+															<object class="AdwStatusPage">
+																<property name="icon-name">daytime-sunrise-symbolic</property>
+																<property name="title" translatable="yes">Welcome to Fidei!</property>
+																<property name="description" translatable="yes">Pick a book from the sidebar on the left</property>
+																<property name="hexpand">true</property>
+																<property name="vexpand">true</property>
 															</object>
 														</property>
-														<style>
-															<class name="view"/>
-														</style>
 													</object>
 												</child>
-											</object>
-										</child>
-									</object>
-								</child>
-								<child>
-									<object class="AdwLeafletPage">
-										<property name="navigatable">false</property>
-										<property name="child">
-										<object class="GtkSeparator">
-											<property name="orientation">vertical</property>
-										</object>
-										</property>
-									</object>
-								</child>
-								<child>
-									<object class="GtkBox">
-										<property name="orientation">vertical</property>
-										<property name="width-request">384</property>
-										<child>
-											<object class="GtkBox" id="content_actions">
-												<property name="orientation">horizontal</property>
-												<property name="visible">false</property> <!-- will be set to true once chapter has been opened. bound against seperator:visibe -->
-												<child>
-													<object class="GtkBox">
-														<property name="orientation">horizontal</property>
-														<property name="hexpand">true</property>
-														<property name="halign">start</property>
-														<property name="margin-top">8</property>
-														<property name="margin-start">8</property>
-														<property name="margin-end">8</property>
-														<property name="margin-bottom">8</property>
-														<child>
-															<object class="GtkButton" id="leaflet_back_navbtn">
-																<property name="icon-name">go-first-symbolic</property>
-																<property name="visible"
-																	bind-source="main"
-																	bind-property="folded"
-																	bind-flags="sync-create"/>
-																<style>
-																	<class name="pill"/>
-																</style>
-															</object>
-														</child>
-													</object>
-												</child>
-												<child>
-													<object class="GtkBox">
-														<property name="orientation">horizontal</property>
-														<property name="margin-top">8</property>
-														<property name="margin-start">8</property>
-														<property name="margin-end">8</property>
-														<property name="margin-bottom">8</property>
-														<child>
-															<object class="GtkButton" id="chapter_prev_navbtn">
-																<property name="icon-name">go-previous-symbolic</property>
-																<style>
-																	<class name="pill"/>
-																</style>
-															</object>
-														</child>
-														<child>
-															<object class="GtkButton" id="chapter_fwd_navbtn">
-																<property name="icon-name">go-next-symbolic</property>
-																<style>
-																	<class name="pill"/>
-																</style>
-															</object>
-														</child>
-														<style>
-															<class name="linked"/>
-														</style>
-													</object>
-												</child>
-											</object>
-										</child>
-										<child>
-											<object class="GtkSeparator">
-												<property name="orientation">horizontal</property>
-												<property name="visible"
-																	bind-source="content_actions"
-																	bind-property="visible"
-																	bind-flags="sync-create|bidirectional"/>
-											</object>
-										</child>
-										<child>
-											<object class="GtkScrolledWindow" id="content">
-												<property name="hscrollbar_policy">never</property>
-												<property name="vexpand">true</property>
-												<property name="child">
-													<object class="AdwStatusPage">
-														<property name="icon-name">daytime-sunrise-symbolic</property>
-														<property name="title" translatable="yes">Welcome to Fidei!</property>
-														<property name="description" translatable="yes">Pick a book from the sidebar on the left</property>
-														<property name="hexpand">true</property>
-														<property name="vexpand">true</property>
-													</object>
-												</property>
 											</object>
 										</child>
 									</object>
@@ -276,7 +282,7 @@
 							</object>
 						</child>
 					</object>
-				</child>
+				</property>
 			</object>
 		</property>
 	</template>

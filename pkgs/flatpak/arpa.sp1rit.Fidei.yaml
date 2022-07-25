@@ -1,0 +1,22 @@
+app-id: arpa.sp1rit.Fidei
+
+runtime: org.gnome.Platform
+runtime-version: 42
+sdk: org.gnome.Sdk
+
+command: fidei
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+
+modules:
+  - name: fidei
+    buildsystem: meson
+    config-opts:
+      - -Dsandboxed=true
+    sources:
+      - type: dir
+        path: ../../
+      - type: patch
+        path: 0001-flatpak-patch.patch

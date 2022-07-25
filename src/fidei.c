@@ -5,6 +5,12 @@
 #include "preferences.h"
 #include "utils.h"
 
+#ifdef FIDEI_USE_PORTALS
+#include "xdg_openurl.h"
+#include <fcntl.h>
+#include <gio/gunixfdlist.h>
+#endif
+
 #include <libintl.h>
 #define _t(String) gettext (String)
 
@@ -33,6 +39,7 @@ typedef struct {
 
 	GSettings* settings;
 
+	AdwToastOverlay* toasts;
 	AdwWindowTitle* title;
 	// parent
 	GtkStack* initializer_stack;
@@ -118,6 +125,7 @@ void fidei_appwindow_class_init(FideiAppWindowClass* class) {
 	g_object_class_install_properties(object_class, N_PROPERTIES, obj_properties);
 
 	gtk_widget_class_set_template_from_resource(widget_class, "/arpa/sp1rit/Fidei/ui/fidei.ui");
+	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, toasts);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, title);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, initializer_stack);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, bibleselect_scroll);
@@ -181,10 +189,76 @@ static void fidei_appwindow_font_changed(GSettings*, gchar* key, FideiAppWindow*
 static void bible_selector_clicked(GtkListBox*, GtkListBoxRow* row, FideiAppWindow* self) {
 	fidei_appwindow_set_active_bible(self, fidei_biblepicker_item_row_get_bible(FIDEI_BIBLEPICKER_ITEM_ROW(row)));
 }
-static void open_gfile(GFile* file) {
+
+#ifdef FIDEI_USE_PORTALS
+void open_gfile_portal_cb(GObject* src, GAsyncResult* res, FideiAppWindow* self) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+	const gchar* err_notif_str = _t("Failed opening external application");
+
+	GError* err = NULL;
+	if (!xdg_desktop_open_uri_call_open_directory_finish(XDG_DESKTOP_OPEN_URI(src), NULL, NULL, res, &err)) {
+		AdwToast* notif = adw_toast_new(err_notif_str);
+		adw_toast_overlay_add_toast(priv->toasts, notif);
+
+		g_critical("Failed creating XdgDesktopOpenURI proxy: %s\n", err->message);
+		g_error_free(err);
+	}
+
+	g_object_unref(src);
+}
+
+static void open_gfile(FideiAppWindow* self, GFile* file) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+	const gchar* err_notif_str = _t("Failed opening external application");
+
+	GDBusConnection* bus = g_application_get_dbus_connection(G_APPLICATION(gtk_window_get_application(GTK_WINDOW(self))));
+
+	GError* err = NULL;
+	XdgDesktopOpenURI* prox = xdg_desktop_open_uri_proxy_new_sync(bus, 0, "org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop", NULL, &err);
+	if (err) {
+		AdwToast* notif = adw_toast_new(err_notif_str);
+		adw_toast_overlay_add_toast(priv->toasts, notif);
+
+		g_critical("Failed creating XdgDesktopOpenURI proxy: %s\n", err->message);
+		g_error_free(err);
+
+		return;
+	}
+
+	GVariant* params = g_variant_new("a{sv}", NULL);
+	if (g_file_is_native(file)) {
+		gchar* path = g_file_get_path(file);
+		GFileType type = g_file_query_file_type(file, G_FILE_QUERY_INFO_NONE, NULL);
+		GVariant* vfd = g_variant_new("h", 0);
+		GUnixFDList* fd_list = NULL;
+		if (type == G_FILE_TYPE_DIRECTORY) {
+			gint fd = open(path, O_DIRECTORY | O_RDONLY | O_CLOEXEC);
+			fd_list = g_unix_fd_list_new_from_array(&fd, 1);
+			xdg_desktop_open_uri_call_open_directory(prox, "self", vfd, params, fd_list, NULL, (GAsyncReadyCallback)open_gfile_portal_cb, self);
+		} else {
+			gint fd = open(path, O_RDONLY | O_CLOEXEC);
+			fd_list = g_unix_fd_list_new_from_array(&fd, 1);
+			xdg_desktop_open_uri_call_open_file(prox, "self", vfd, params, fd_list, NULL, (GAsyncReadyCallback)open_gfile_portal_cb, self);
+		}
+		g_object_unref(fd_list);
+		g_free(path);
+	} else {
+		gchar* uri = g_file_get_uri(file);
+		xdg_desktop_open_uri_call_open_uri(prox, "self", uri, params, NULL, (GAsyncReadyCallback)open_gfile_portal_cb, self);
+		g_free(uri);
+	}
+}
+#else
+static void open_gfile(FideiAppWindow* self, GFile* file) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+	const gchar* err_notif_str = _t("Failed opening external application");
+
 	GError* err = NULL;
 	GAppInfo* app = g_file_query_default_handler(file, NULL, &err);
 	if (err) {
+		AdwToast* notif = adw_toast_new(err_notif_str);
+		adw_toast_overlay_add_toast(priv->toasts, notif);
+
 		g_critical(_t("Failed querying launch application: %s\n"), err->message);
 		g_error_free(err);
 		return;
@@ -197,6 +271,9 @@ static void open_gfile(GFile* file) {
 
 	g_app_info_launch(app, files, NULL, &err);
 	if (err) {
+		AdwToast* notif = adw_toast_new(err_notif_str);
+		adw_toast_overlay_add_toast(priv->toasts, notif);
+
 		g_critical(_t("Failed launching application: %s\n"), err->message);
 		g_error_free(err);
 	}
@@ -204,18 +281,20 @@ static void open_gfile(GFile* file) {
 	g_list_free(files);
 	g_object_unref(app);
 }
-static void browser_btn_clicked(GtkButton*, gpointer) {
+#endif
+
+static void browser_btn_clicked(GtkButton*, FideiAppWindow* self) {
 	GFile* download_page = g_file_new_for_uri("https://bible4u.app/download.html");
 
-	open_gfile(download_page);
+	open_gfile(self, download_page);
 
 	g_object_unref(download_page);
 }
-static void bibledir_btn_clicked(GtkButton*, gpointer) {
+static void bibledir_btn_clicked(GtkButton*, FideiAppWindow* self) {
 	const gchar* datadir = g_get_user_data_dir();
 	GFile* bibledir = g_file_new_build_filename(datadir, "arpa.sp1rit.Fidei", NULL);
 
-	open_gfile(bibledir);
+	open_gfile(self, bibledir);
 
 	g_object_unref(bibledir);
 }
@@ -293,8 +372,8 @@ void fidei_appwindow_init(FideiAppWindow* self) {
 	gtk_widget_init_template(GTK_WIDGET(self));
 
 	g_signal_connect(priv->bible_selector, "row-activated", G_CALLBACK(bible_selector_clicked), self);
-	g_signal_connect(priv->browser_btn, "clicked", G_CALLBACK(browser_btn_clicked), NULL);
-	g_signal_connect(priv->bibledir_btn, "clicked", G_CALLBACK(bibledir_btn_clicked), NULL);
+	g_signal_connect(priv->browser_btn, "clicked", G_CALLBACK(browser_btn_clicked), self);
+	g_signal_connect(priv->bibledir_btn, "clicked", G_CALLBACK(bibledir_btn_clicked), self);
 
 	g_signal_connect(priv->book_selector, "activate", G_CALLBACK(book_clicked), self);
 
@@ -536,6 +615,9 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
 	g_return_if_fail(chapter < fidei_biblebook_get_num_chapters(priv->active_biblebook));
 
+	GtkAdjustment* vadj = gtk_scrolled_window_get_vadjustment(priv->content);
+	gtk_adjustment_set_value(vadj, 0.0);
+
 	FideiBibleVers* verses;
 	guint num_verses = fidei_bible_read_chapter(priv->active_bible, book, chapter, &verses);
 	GtkWidget* chapterview = create_chapter_content_view(self, fidei_bible_get_lang(priv->active_bible), verses, num_verses);
@@ -554,9 +636,6 @@ void fidei_appwindow_open_chapter(FideiAppWindow* self, gint book, gint chapter)
 	gtk_scrolled_window_set_child(priv->content, chapterview);
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->chapter_prev_navbtn), (gboolean)chapter);
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->chapter_fwd_navbtn), chapter+1 < fidei_biblebook_get_num_chapters(priv->active_biblebook));
-
-	GtkAdjustment* vadj = gtk_scrolled_window_get_vadjustment(priv->content);
-	gtk_adjustment_set_value(vadj, 0.0);
 
 	adw_leaflet_navigate(priv->main, ADW_NAVIGATION_DIRECTION_FORWARD);
 
