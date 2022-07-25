@@ -44,7 +44,7 @@ typedef struct {
 	// content-parent
 	AdwLeaflet* main;
 	// book/chapter select
-	GtkStack* selector_stack;
+	AdwLeaflet* selector_stack;
 	GtkScrolledWindow* booksel_scroll;
 	GtkListView* book_selector;
 	GtkBox* chaptersel_box;
@@ -256,12 +256,12 @@ static void book_clicked(GtkListView* view, guint pos, FideiAppWindow* self) {
 	gtk_grid_view_set_model(priv->chapter_selector, GTK_SELECTION_MODEL(chaptermodel));
 	g_object_unref(chaptermodel);
 
-	gtk_stack_set_visible_child(priv->selector_stack, GTK_WIDGET(priv->chaptersel_box));
+	adw_leaflet_navigate(priv->selector_stack, ADW_NAVIGATION_DIRECTION_FORWARD);
 }
 
 static void chapter_back_book_navbtn_clicked(GtkButton*, FideiAppWindow* self) {
 	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
-	gtk_stack_set_visible_child(priv->selector_stack, GTK_WIDGET(priv->booksel_scroll));
+	adw_leaflet_navigate(priv->selector_stack, ADW_NAVIGATION_DIRECTION_BACK);
 }
 
 static void chapter_clicked(GtkListView*, guint pos, FideiAppWindow* self) {
