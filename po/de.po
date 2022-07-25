@@ -93,7 +93,7 @@ msgstr "Über Fidei"
 
 #: data/ui/fidei.ui:70
 msgid "Download more"
-msgstr "Mehr herunterladen"
+msgstr "Weitere herunterladen"
 
 #: data/ui/fidei.ui:80
 msgid "Open directory"
