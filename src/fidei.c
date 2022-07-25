@@ -200,7 +200,7 @@ void open_gfile_portal_cb(GObject* src, GAsyncResult* res, FideiAppWindow* self)
 		AdwToast* notif = adw_toast_new(err_notif_str);
 		adw_toast_overlay_add_toast(priv->toasts, notif);
 
-		g_critical("Failed creating XdgDesktopOpenURI proxy: %s\n", err->message);
+		g_critical(_t("Failed creating XdgDesktopOpenURI proxy: %s\n"), err->message);
 		g_error_free(err);
 	}
 
@@ -219,7 +219,7 @@ static void open_gfile(FideiAppWindow* self, GFile* file) {
 		AdwToast* notif = adw_toast_new(err_notif_str);
 		adw_toast_overlay_add_toast(priv->toasts, notif);
 
-		g_critical("Failed creating XdgDesktopOpenURI proxy: %s\n", err->message);
+		g_critical(_t("Failed creating XdgDesktopOpenURI proxy: %s\n"), err->message);
 		g_error_free(err);
 
 		return;

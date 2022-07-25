@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: arpa.sp1rit.Fidei 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-25 00:32+0200\n"
+"POT-Creation-Date: 2022-07-26 00:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,66 +17,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app.c:25
-#, c-format
-msgid "Failure creating directory: %s\n"
-msgstr ""
-
-#: src/app.c:32
-#, c-format
-msgid "Failure opening directory: %s\n"
-msgstr ""
-
-#: src/app.c:43
-#, c-format
-msgid "Failure acessing file: %s\n"
-msgstr ""
-
-#: src/bible.c:405
-#, c-format
-msgid "Invalid vref found on caption: %s\n"
-msgstr ""
-
-#: src/fidei.c:154
+#: data/ui/about.ui:6
 msgid "Take back your faith"
 msgstr ""
 
-#: src/fidei.c:156
+#: data/ui/about.ui:7
 msgid "Copyright (c) 2022 Florian \"sp1rit\" and contributors"
 msgstr ""
 
-#: src/fidei.c:204
-#, c-format
-msgid "Failed querying launch application: %s\n"
-msgstr ""
-
-#: src/fidei.c:216
-#, c-format
-msgid "Failed launching application: %s\n"
-msgstr ""
-
-#: src/fidei.c:378
-msgid "Property bibles of Fidei.AppWindow can only be set once"
-msgstr ""
-
-#: src/fidei.c:392
+#: data/ui/bible_items_empty.ui:12
 msgid "No bibles found on your system"
-msgstr ""
-
-#: src/preferences.c:161
-msgid "Add language"
-msgstr ""
-
-#: src/preferences.c:202
-msgid "Regular Expression"
-msgstr ""
-
-#: src/preferences.c:215
-msgid "Remove language"
-msgstr ""
-
-#: src/preferences.c:247
-msgid "Property settings of Fidei.Preferences can only be set once"
 msgstr ""
 
 #: data/ui/fidei.ui:6
@@ -91,19 +41,19 @@ msgstr ""
 msgid "About Fidei"
 msgstr ""
 
-#: data/ui/fidei.ui:70
+#: data/ui/fidei.ui:74
 msgid "Download more"
 msgstr ""
 
-#: data/ui/fidei.ui:80
+#: data/ui/fidei.ui:84
 msgid "Open directory"
 msgstr ""
 
-#: data/ui/fidei.ui:263
+#: data/ui/fidei.ui:270
 msgid "Welcome to Fidei!"
 msgstr ""
 
-#: data/ui/fidei.ui:264
+#: data/ui/fidei.ui:271
 msgid "Pick a book from the sidebar on the left"
 msgstr ""
 
@@ -147,6 +97,7 @@ msgstr ""
 msgid "Bible"
 msgstr ""
 
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/arpa.sp1rit.Fidei.desktop:13
 msgid "Bible;Luther;King James;"
 msgstr ""
@@ -195,4 +146,63 @@ msgstr ""
 
 #: data/arpa.sp1rit.Fidei.metainfo.xml:90
 msgid "Initial release"
+msgstr ""
+
+#: src/app.c:25
+#, c-format
+msgid "Failure creating directory: %s\n"
+msgstr ""
+
+#: src/app.c:32
+#, c-format
+msgid "Failure opening directory: %s\n"
+msgstr ""
+
+#: src/app.c:43
+#, c-format
+msgid "Failure acessing file: %s\n"
+msgstr ""
+
+#: src/bible.c:405
+#, c-format
+msgid "Invalid vref found on caption: %s\n"
+msgstr ""
+
+#: src/fidei.c:196 src/fidei.c:212 src/fidei.c:254
+msgid "Failed opening external application"
+msgstr ""
+
+#: src/fidei.c:203 src/fidei.c:222
+#, c-format
+msgid "Failed creating XdgDesktopOpenURI proxy: %s\n"
+msgstr ""
+
+#: src/fidei.c:262
+#, c-format
+msgid "Failed querying launch application: %s\n"
+msgstr ""
+
+#: src/fidei.c:277
+#, c-format
+msgid "Failed launching application: %s\n"
+msgstr ""
+
+#: src/fidei.c:403
+msgid "Property bibles of Fidei.AppWindow can only be set once"
+msgstr ""
+
+#: src/preferences.c:161
+msgid "Add language"
+msgstr ""
+
+#: src/preferences.c:202
+msgid "Regular Expression"
+msgstr ""
+
+#: src/preferences.c:215
+msgid "Remove language"
+msgstr ""
+
+#: src/preferences.c:247
+msgid "Property settings of Fidei.Preferences can only be set once"
 msgstr ""
