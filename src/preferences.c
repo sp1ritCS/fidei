@@ -7,6 +7,7 @@
 typedef struct {
 	GSettings* settings;
 
+	GtkSwitch* caption_btn;
 	GtkFontButton* font_btn;
 	AdwBin* smallcaps_bin;
 
@@ -69,6 +70,7 @@ static void fidei_preferences_class_init(FideiPreferencesClass* class) {
 	g_object_class_install_properties(object_class, N_PROPERTIES, obj_properties);
 
 	gtk_widget_class_set_template_from_resource(widget_class, "/arpa/sp1rit/Fidei/ui/prefs.ui");
+	gtk_widget_class_bind_template_child_private(widget_class, FideiPreferences, caption_btn);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiPreferences, font_btn);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiPreferences, smallcaps_bin);
 }
@@ -250,6 +252,7 @@ void fidei_preferences_set_settings(FideiPreferences* self, GSettings* settings)
 
 	priv->settings = g_object_ref(settings);
 
+	g_settings_bind(priv->settings, "captions", priv->caption_btn, "active", G_SETTINGS_BIND_DEFAULT);
 	g_settings_bind(priv->settings, "font", priv->font_btn, "font", G_SETTINGS_BIND_DEFAULT);
 	fidei_preferences_build_smbox(self);
 

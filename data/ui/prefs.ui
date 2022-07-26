@@ -12,6 +12,17 @@
 						<property name="description" translatable="yes">Change the apperance of the content view</property>
 						<child>
 							<object class="AdwActionRow">
+								<property name="title" translatable="yes">Display Headings/Captions</property>
+								<property name="subtitle" translatable="yes">Note: this requires a compatible bible</property>
+								<child type="suffix">
+									<object class="GtkSwitch" id="caption_btn">
+										<property name="valign">center</property>
+									</object>
+								</child>
+							</object>
+						</child>
+						<child>
+							<object class="AdwActionRow">
 								<property name="title" translatable="yes">Font</property>
 								<property name="subtitle" translatable="yes">Change font size and title</property>
 								<property name="activatable-widget">font_btn</property>

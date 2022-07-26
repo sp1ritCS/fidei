@@ -185,6 +185,14 @@ static void fidei_appwindow_font_changed(GSettings*, gchar* key, FideiAppWindow*
 
 	create_chapter_content_view_apply_userfont(self, priv->current_view);
 }
+static void fidei_appwindow_captions_changed(GSettings*, gchar* key, FideiAppWindow* self) {
+	g_return_if_fail(g_strcmp0(key, "captions") == 0);
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+	if (!priv->current_view)
+		return;
+
+	fidei_appwindow_open_chapter(self, fidei_biblebook_get_booknum(priv->active_biblebook), priv->active_chapter);
+}
 
 static void bible_selector_clicked(GtkListBox*, GtkListBoxRow* row, FideiAppWindow* self) {
 	fidei_appwindow_set_active_bible(self, fidei_biblepicker_item_row_get_bible(FIDEI_BIBLEPICKER_ITEM_ROW(row)));
@@ -357,6 +365,7 @@ void fidei_appwindow_init(FideiAppWindow* self) {
 
 	priv->settings = g_settings_new("arpa.sp1rit.Fidei");
 	fidei_appwindow_setup_window_size(self);
+	g_signal_connect(priv->settings, "changed::captions", G_CALLBACK(fidei_appwindow_captions_changed), self);
 	g_signal_connect(priv->settings, "changed::font", G_CALLBACK(fidei_appwindow_font_changed), self);
 
 	GSimpleAction* navigate_picker = g_simple_action_new("nav_picker", NULL);
@@ -568,10 +577,11 @@ static GtkWidget* create_chapter_content_view(FideiAppWindow* self, const gchar*
 
 	g_free(lord_regex);
 
+	gboolean captions_enabled = g_settings_get_boolean(priv->settings, "captions");
 	GtkTextIter end;
 	for (gsize i = 0; i < n_verses; i++) {
 		gboolean has_caption = FALSE;
-		if (verses[i].caption) {
+		if (captions_enabled && verses[i].caption) {
 			gtk_text_buffer_get_end_iter(buf, &end);
 			gchar* caption = g_strdup_printf("\n\n<span font_family=\"Cantarell\" font_size=\"large\" font_weight=\"bold\" font_variant=\"all-petite-caps\">%s</span>\n", verses[i].caption);
 			gtk_text_buffer_insert_markup(buf, &end, &caption[((gsize)!i)*2], -1);

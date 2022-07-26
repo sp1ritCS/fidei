@@ -23,10 +23,15 @@
 		</key>
 		<key name="active-chapter" type="(si)">
 			<default>("", -1)</default>
-			<summary>Identifier of the currently active bible</summary>
+			<summary>Identifier of the currently active chapter</summary>
 		</key>
 		<!-- end bible state -->
+
 		<!-- begin preferences -->
+		<key name="captions" type="b">
+			<default>true</default>
+			<summary>Display Headings/Captions (this requires a compatible bible)</summary>
+		</key>
 		<key name="font" type="s">
 			<default>"Serif 12"</default>
 			<summary>Font that will be used for the content view</summary>
