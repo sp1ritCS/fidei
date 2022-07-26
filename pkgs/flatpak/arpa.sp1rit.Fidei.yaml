@@ -1,7 +1,7 @@
 app-id: arpa.sp1rit.Fidei
 
 runtime: org.gnome.Platform
-runtime-version: 42
+runtime-version: "42"
 sdk: org.gnome.Sdk
 
 command: fidei
