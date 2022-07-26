@@ -1,0 +1,30 @@
+master:
+  steps:
+    - trigger_services:
+        project: home:sp1rit:fidei
+        package: fidei
+  filters:
+    event: tag_push
+    branches:
+      only:
+        - master
+
+nightly:
+  steps:
+    - trigger_services:
+        project: home:sp1rit:fidei:nightly
+        package: fidei
+  filters:
+    event: push
+    branches:
+      only:
+        - master
+
+pr:
+  steps:
+    - branch_package:
+        source_project: home:sp1rit:fidei:nightly
+        source_package: fidei
+        target_project: home:sp1rit:fidei:ci
+  filters:
+    event: pull_request
