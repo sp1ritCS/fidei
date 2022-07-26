@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: arpa.sp1rit.Fidei 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-26 00:02+0200\n"
+"POT-Creation-Date: 2022-07-26 14:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,22 +70,30 @@ msgid "Change the apperance of the content view"
 msgstr ""
 
 #: data/ui/prefs.ui:15
-msgid "Font"
+msgid "Display Headings/Captions"
 msgstr ""
 
 #: data/ui/prefs.ui:16
+msgid "Note: this requires a compatible bible"
+msgstr ""
+
+#: data/ui/prefs.ui:26
+msgid "Font"
+msgstr ""
+
+#: data/ui/prefs.ui:27
 msgid "Change font size and title"
 msgstr ""
 
-#: data/ui/prefs.ui:35
+#: data/ui/prefs.ui:46
 msgid "Presentation of »Lord«"
 msgstr ""
 
-#: data/ui/prefs.ui:40
+#: data/ui/prefs.ui:51
 msgid "Small caps"
 msgstr ""
 
-#: data/ui/prefs.ui:41
+#: data/ui/prefs.ui:52
 msgid "Configure string matches that will convert to small caps"
 msgstr ""
 
@@ -132,19 +140,19 @@ msgstr ""
 msgid "Florian \"sp1rit\""
 msgstr ""
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:53
+#: data/arpa.sp1rit.Fidei.metainfo.xml:60
 msgid "The initial screen, showing available bibles on the system"
 msgstr ""
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:57
+#: data/arpa.sp1rit.Fidei.metainfo.xml:64
 msgid "Fidei in desktop mode, showing Mark 10"
 msgstr ""
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:61
+#: data/arpa.sp1rit.Fidei.metainfo.xml:68
 msgid "Fidei in mobile mode, showing Genesis 3"
 msgstr ""
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:90
+#: data/arpa.sp1rit.Fidei.metainfo.xml:97
 msgid "Initial release"
 msgstr ""
 
@@ -168,41 +176,41 @@ msgstr ""
 msgid "Invalid vref found on caption: %s\n"
 msgstr ""
 
-#: src/fidei.c:196 src/fidei.c:212 src/fidei.c:254
+#: src/fidei.c:204 src/fidei.c:220 src/fidei.c:262
 msgid "Failed opening external application"
 msgstr ""
 
-#: src/fidei.c:203 src/fidei.c:222
+#: src/fidei.c:211 src/fidei.c:230
 #, c-format
 msgid "Failed creating XdgDesktopOpenURI proxy: %s\n"
 msgstr ""
 
-#: src/fidei.c:262
+#: src/fidei.c:270
 #, c-format
 msgid "Failed querying launch application: %s\n"
 msgstr ""
 
-#: src/fidei.c:277
+#: src/fidei.c:285
 #, c-format
 msgid "Failed launching application: %s\n"
 msgstr ""
 
-#: src/fidei.c:403
+#: src/fidei.c:412
 msgid "Property bibles of Fidei.AppWindow can only be set once"
 msgstr ""
 
-#: src/preferences.c:161
+#: src/preferences.c:163
 msgid "Add language"
 msgstr ""
 
-#: src/preferences.c:202
+#: src/preferences.c:204
 msgid "Regular Expression"
 msgstr ""
 
-#: src/preferences.c:215
+#: src/preferences.c:217
 msgid "Remove language"
 msgstr ""
 
-#: src/preferences.c:247
+#: src/preferences.c:249
 msgid "Property settings of Fidei.Preferences can only be set once"
 msgstr ""

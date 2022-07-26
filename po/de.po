@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: arpa.sp1rit.Fidei 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-26 00:02+0200\n"
-"PO-Revision-Date: 2022-07-26 00:08+0200\n"
+"POT-Creation-Date: 2022-07-26 14:36+0200\n"
+"PO-Revision-Date: 2022-07-26 14:38+0200\n"
 "Last-Translator: Florian \"sp1rit\" <sp1rit@national.shitposting.agency>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -70,22 +70,30 @@ msgid "Change the apperance of the content view"
 msgstr "Ändere das Erscheinungsbild von der Inhaltsansicht"
 
 #: data/ui/prefs.ui:15
+msgid "Display Headings/Captions"
+msgstr "Überschriften/Titel anzeigen"
+
+#: data/ui/prefs.ui:16
+msgid "Note: this requires a compatible bible"
+msgstr "Obacht: dies benötigt eine kompatible Bibel"
+
+#: data/ui/prefs.ui:26
 msgid "Font"
 msgstr "Schriftart"
 
-#: data/ui/prefs.ui:16
+#: data/ui/prefs.ui:27
 msgid "Change font size and title"
 msgstr "Ändere Schiftgröße und -titel"
 
-#: data/ui/prefs.ui:35
+#: data/ui/prefs.ui:46
 msgid "Presentation of »Lord«"
 msgstr "Darstellung von »Herr«"
 
-#: data/ui/prefs.ui:40
+#: data/ui/prefs.ui:51
 msgid "Small caps"
 msgstr "Kapitälchen"
 
-#: data/ui/prefs.ui:41
+#: data/ui/prefs.ui:52
 msgid "Configure string matches that will convert to small caps"
 msgstr ""
 "Konfiguriere die string abgleichungen die in Kapitälchen konvertiert werden"
@@ -135,21 +143,21 @@ msgstr "Unterstützung für die richtige Kapitalisation (Kapitälchen) von »Her
 msgid "Florian \"sp1rit\""
 msgstr "Florian \"sp1rit\""
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:53
+#: data/arpa.sp1rit.Fidei.metainfo.xml:60
 msgid "The initial screen, showing available bibles on the system"
 msgstr ""
 "Der Startbildschirm, welcher die Bibeln anzeicht, die auf dem System "
 "verfügbar sind"
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:57
+#: data/arpa.sp1rit.Fidei.metainfo.xml:64
 msgid "Fidei in desktop mode, showing Mark 10"
 msgstr "Fidei im Desktop-Modus, während es Markus 10 anzeigt"
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:61
+#: data/arpa.sp1rit.Fidei.metainfo.xml:68
 msgid "Fidei in mobile mode, showing Genesis 3"
 msgstr "Fidei im Mobil-Modus, während es 1. Mose 3 anzeigt"
 
-#: data/arpa.sp1rit.Fidei.metainfo.xml:90
+#: data/arpa.sp1rit.Fidei.metainfo.xml:97
 msgid "Initial release"
 msgstr "Anfängliche Veröffentlichung"
 
@@ -173,43 +181,44 @@ msgstr "Datei konnte nicht aufgerufen werden: %s\n"
 msgid "Invalid vref found on caption: %s\n"
 msgstr "Caption mit invalider vref gefunden\n"
 
-#: src/fidei.c:196 src/fidei.c:212 src/fidei.c:254
+#: src/fidei.c:204 src/fidei.c:220 src/fidei.c:262
 msgid "Failed opening external application"
 msgstr "Es ist nicht möglich die externe Anwendung zu starten"
 
-#: src/fidei.c:203 src/fidei.c:222
+#: src/fidei.c:211 src/fidei.c:230
 #, c-format
 msgid "Failed creating XdgDesktopOpenURI proxy: %s\n"
 msgstr ""
-"Ein Fehler ist während der Erstellung des XdgDesktopOpenURI Proxy aufgetreten:\n"
+"Ein Fehler ist während der Erstellung des XdgDesktopOpenURI Proxy "
+"aufgetreten:\n"
 "%s\n"
 
-#: src/fidei.c:262
+#: src/fidei.c:270
 #, c-format
 msgid "Failed querying launch application: %s\n"
 msgstr "Abfrage der Launchanwendung fehlgeschlagen: %s\n"
 
-#: src/fidei.c:277
+#: src/fidei.c:285
 #, c-format
 msgid "Failed launching application: %s\n"
 msgstr "Starten der Anwendung fehlgeschlagen: %s\n"
 
-#: src/fidei.c:403
+#: src/fidei.c:412
 msgid "Property bibles of Fidei.AppWindow can only be set once"
 msgstr "Property bibles von Fidei.AppWindow kann nur einmal gesetzt werden"
 
-#: src/preferences.c:161
+#: src/preferences.c:163
 msgid "Add language"
 msgstr "Sprache hinzufügen"
 
-#: src/preferences.c:202
+#: src/preferences.c:204
 msgid "Regular Expression"
 msgstr "Reguläre Expression"
 
-#: src/preferences.c:215
+#: src/preferences.c:217
 msgid "Remove language"
 msgstr "Sprache entfernen"
 
-#: src/preferences.c:247
+#: src/preferences.c:249
 msgid "Property settings of Fidei.Preferences can only be set once"
 msgstr "Property settings von Fidei.Preferences kann nur einmal gesetzt werden"
