@@ -33,6 +33,7 @@ const gchar* fidei_bible_get_title(FideiBible* self);
 const gchar* fidei_bible_get_lang(FideiBible* self);
 const gchar* fidei_bible_get_publisher(FideiBible* self);
 const gchar* fidei_bible_get_identifier(FideiBible* self);
+const gchar* fidei_bible_get_rights(FideiBible* self);
 
 GListStore* fidei_bible_read_books(FideiBible* self);
 guint fidei_bible_read_chapter(FideiBible* self, gint book, gint chapter, FideiBibleVers** verses);
