@@ -288,6 +288,12 @@ const gchar* fidei_bible_get_identifier(FideiBible* self) {
 	FideiBiblePrivate* priv = fidei_bible_get_instance_private(self);
 	return (gchar*)priv->identifier;
 }
+const gchar* fidei_bible_get_rights(FideiBible* self) {
+	g_return_val_if_fail(FIDEI_IS_BIBLE(self), NULL);
+
+	FideiBiblePrivate* priv = fidei_bible_get_instance_private(self);
+	return (gchar*)priv->rights;
+}
 
 GListStore* fidei_bible_read_books(FideiBible* self) {
 	g_return_val_if_fail(FIDEI_IS_BIBLE(self), NULL);

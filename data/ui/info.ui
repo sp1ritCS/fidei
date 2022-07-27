@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<template class="FideiBibleInfoDiag" parent="GtkDialog">
+		<property name="modal">true</property>
+		<!--property name="title" translatable="yes">Bible information</property-->
+		<child>
+			<object class="AdwToastOverlay" id="toasts">
+				<property name="child">
+					<object class="AdwClamp">
+						<property name="child">
+							<object class="GtkBox">
+								<property name="margin-top">12</property>
+								<property name="margin-start">12</property>
+								<property name="margin-end">12</property>
+								<property name="margin-bottom">12</property>
+								<property name="orientation">vertical</property>
+								<child>
+									<object class="GtkListBox" id="properties">
+										<property name="selection_mode">none</property>
+										<child>
+											<object class="FideiBibleInfoRow">
+												<property name="label" translatable="yes">Title</property>
+												<property name="property"
+													bind-source="FideiBibleInfoDiag"
+													bind-property="title"
+													bind-flags="sync-create"/>
+											</object>
+										</child>
+										<child>
+											<object class="FideiBibleInfoRow">
+												<property name="label" translatable="yes">Path</property>
+												<property name="property"
+													bind-source="FideiBibleInfoDiag"
+													bind-property="path"
+													bind-flags="sync-create"/>
+											</object>
+										</child>
+										<child>
+											<object class="FideiBibleInfoRow">
+												<property name="label" translatable="yes">Publisher</property>
+												<property name="property"
+													bind-source="FideiBibleInfoDiag"
+													bind-property="publisher"
+													bind-flags="sync-create"/>
+											</object>
+										</child>
+										<child>
+											<object class="FideiBibleInfoRow">
+												<property name="label" translatable="yes">Language identifier</property>
+												<property name="property"
+													bind-source="FideiBibleInfoDiag"
+													bind-property="lang"
+													bind-flags="sync-create"/>
+											</object>
+										</child>
+										<child>
+											<object class="FideiBibleInfoRow">
+												<property name="label" translatable="yes">Unique identifier</property>
+												<property name="property"
+													bind-source="FideiBibleInfoDiag"
+													bind-property="identifier"
+													bind-flags="sync-create"/>
+											</object>
+										</child>
+										<child>
+											<object class="FideiBibleInfoRow">
+												<property name="label" translatable="yes">Rights</property>
+												<property name="property"
+													bind-source="FideiBibleInfoDiag"
+													bind-property="rights"
+													bind-flags="sync-create"/>
+											</object>
+										</child>
+										<style>
+											<class name="boxed-list" />
+										</style>
+									</object>
+								</child>
+							</object>
+						</property>
+					</object>
+				</property>
+			</object>
+		</child>
+	</template>
+</interface>

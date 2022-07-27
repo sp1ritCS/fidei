@@ -5,6 +5,8 @@ src = [
 	'fidei.c',
 	'bible.c',
 	'about.c',
+	'bibleinfo_diag.c',
+	'bibleinfo_row.c',
 	'bible_item.c',
 	'num.c',
 	'preferences.c',

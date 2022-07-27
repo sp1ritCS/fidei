@@ -1,5 +1,6 @@
 #include "fidei.h"
 #include "about.h"
+#include "bibleinfo_diag.h"
 #include "bible_item.h"
 #include "num.h"
 #include "preferences.h"
@@ -40,6 +41,7 @@ typedef struct {
 	GSettings* settings;
 
 	AdwToastOverlay* toasts;
+	GtkButton* info_btn;
 	AdwWindowTitle* title;
 	// parent
 	GtkStack* initializer_stack;
@@ -126,6 +128,7 @@ void fidei_appwindow_class_init(FideiAppWindowClass* class) {
 
 	gtk_widget_class_set_template_from_resource(widget_class, "/arpa/sp1rit/Fidei/ui/fidei.ui");
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, toasts);
+	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, info_btn);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, title);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, initializer_stack);
 	gtk_widget_class_bind_template_child_private(widget_class, FideiAppWindow, bibleselect_scroll);
@@ -151,6 +154,7 @@ static void navigate_picker_activated(GSimpleAction*, GVariant*, FideiAppWindow*
 
 	g_settings_reset(priv->settings, "open-bible");
 	gtk_stack_set_visible_child(priv->initializer_stack, GTK_WIDGET(priv->bibleselect_scroll));
+	gtk_widget_set_visible(GTK_WIDGET(priv->info_btn), FALSE);
 	adw_window_title_set_title(priv->title, "Fidei");
 	adw_window_title_set_subtitle(priv->title, NULL);
 }
@@ -192,6 +196,11 @@ static void fidei_appwindow_captions_changed(GSettings*, gchar* key, FideiAppWin
 		return;
 
 	fidei_appwindow_open_chapter(self, fidei_biblebook_get_booknum(priv->active_biblebook), priv->active_chapter);
+}
+
+static void info_btn_clicked(GtkButton*, FideiAppWindow* self) {
+	FideiAppWindowPrivate* priv = fidei_appwindow_get_instance_private(self);
+	gtk_widget_show(fidei_bibleinfo_diag_new(GTK_WINDOW(self), priv->active_bible));
 }
 
 static void bible_selector_clicked(GtkListBox*, GtkListBoxRow* row, FideiAppWindow* self) {
@@ -380,6 +389,8 @@ void fidei_appwindow_init(FideiAppWindow* self) {
 
 	gtk_widget_init_template(GTK_WIDGET(self));
 
+	g_signal_connect(priv->info_btn, "clicked", G_CALLBACK(info_btn_clicked), self);
+
 	g_signal_connect(priv->bible_selector, "row-activated", G_CALLBACK(bible_selector_clicked), self);
 	g_signal_connect(priv->browser_btn, "clicked", G_CALLBACK(browser_btn_clicked), self);
 	g_signal_connect(priv->bibledir_btn, "clicked", G_CALLBACK(bibledir_btn_clicked), self);
@@ -477,11 +488,15 @@ void fidei_appwindow_set_active_bible(FideiAppWindow* self, FideiBible* bible) {
 				break; // TODO: if no new chaper was opened show statuspage again
 			}
 		}
+
+		gtk_widget_set_visible(GTK_WIDGET(priv->info_btn), TRUE);
+
 		g_object_unref(model);
 
 		g_free(active_book);
 	} else {
 		gtk_list_view_set_model(priv->book_selector, NULL);
+		gtk_widget_set_visible(GTK_WIDGET(priv->info_btn), FALSE);
 	}
 
 
