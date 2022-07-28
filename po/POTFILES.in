@@ -4,12 +4,14 @@
 data/ui/about.ui
 data/ui/bible_items_empty.ui
 data/ui/fidei.ui
+data/ui/info.ui
 data/ui/prefs.ui
 
 data/arpa.sp1rit.Fidei.desktop
 data/arpa.sp1rit.Fidei.metainfo.xml
 
 src/app.c
+src/bibleinfo_diag.c
 src/bible.c
 src/fidei.c
 src/preferences.c
