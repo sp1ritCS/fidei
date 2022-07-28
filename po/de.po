@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: arpa.sp1rit.Fidei 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-26 14:36+0200\n"
-"PO-Revision-Date: 2022-07-26 14:38+0200\n"
+"POT-Creation-Date: 2022-07-28 02:35+0200\n"
+"PO-Revision-Date: 2022-07-28 02:41+0200\n"
 "Last-Translator: Florian \"sp1rit\" <sp1rit@national.shitposting.agency>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -41,21 +41,45 @@ msgstr "Einstellungen"
 msgid "About Fidei"
 msgstr "Über Fidei"
 
-#: data/ui/fidei.ui:74
+#: data/ui/fidei.ui:78
 msgid "Download more"
 msgstr "Weitere herunterladen"
 
-#: data/ui/fidei.ui:84
+#: data/ui/fidei.ui:88
 msgid "Open directory"
 msgstr "Verzeichnis öffnen"
 
-#: data/ui/fidei.ui:270
+#: data/ui/fidei.ui:274
 msgid "Welcome to Fidei!"
 msgstr "Willkommen zu Fidei!"
 
-#: data/ui/fidei.ui:271
+#: data/ui/fidei.ui:275
 msgid "Pick a book from the sidebar on the left"
 msgstr "Wähle ein Buch von der linken Seitenleiste aus"
+
+#: data/ui/info.ui:22
+msgid "Title"
+msgstr "Titel"
+
+#: data/ui/info.ui:31
+msgid "Path"
+msgstr "Pfad"
+
+#: data/ui/info.ui:40
+msgid "Publisher"
+msgstr "Verlag"
+
+#: data/ui/info.ui:49
+msgid "Language identifier"
+msgstr "Sprachkürzel"
+
+#: data/ui/info.ui:58
+msgid "Unique identifier"
+msgstr "Eindeutige Kennung"
+
+#: data/ui/info.ui:67
+msgid "Rights"
+msgstr "Rechte"
 
 #: data/ui/prefs.ui:6
 msgid "General"
@@ -176,16 +200,24 @@ msgstr "Verzeichnis konnte nicht geöffnet werden: %s\n"
 msgid "Failure acessing file: %s\n"
 msgstr "Datei konnte nicht aufgerufen werden: %s\n"
 
-#: src/bible.c:405
+#: src/bibleinfo_diag.c:118
+msgid "Copied to clipboard"
+msgstr "In die Zwischenablage kopiert"
+
+#: src/bibleinfo_diag.c:128
+msgid "Bible information"
+msgstr "Bibel Informationen"
+
+#: src/bible.c:411
 #, c-format
 msgid "Invalid vref found on caption: %s\n"
 msgstr "Caption mit invalider vref gefunden\n"
 
-#: src/fidei.c:204 src/fidei.c:220 src/fidei.c:262
+#: src/fidei.c:213 src/fidei.c:229 src/fidei.c:271
 msgid "Failed opening external application"
 msgstr "Es ist nicht möglich die externe Anwendung zu starten"
 
-#: src/fidei.c:211 src/fidei.c:230
+#: src/fidei.c:220 src/fidei.c:239
 #, c-format
 msgid "Failed creating XdgDesktopOpenURI proxy: %s\n"
 msgstr ""
@@ -193,17 +225,17 @@ msgstr ""
 "aufgetreten:\n"
 "%s\n"
 
-#: src/fidei.c:270
+#: src/fidei.c:279
 #, c-format
 msgid "Failed querying launch application: %s\n"
 msgstr "Abfrage der Launchanwendung fehlgeschlagen: %s\n"
 
-#: src/fidei.c:285
+#: src/fidei.c:294
 #, c-format
 msgid "Failed launching application: %s\n"
 msgstr "Starten der Anwendung fehlgeschlagen: %s\n"
 
-#: src/fidei.c:412
+#: src/fidei.c:423
 msgid "Property bibles of Fidei.AppWindow can only be set once"
 msgstr "Property bibles von Fidei.AppWindow kann nur einmal gesetzt werden"
 
