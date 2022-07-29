@@ -52,6 +52,8 @@ static void fidei_bibleinfo_row_object_dispose(GObject* object) {
 
 	g_free(g_steal_pointer(&priv->label));
 	g_free(g_steal_pointer(&priv->property));
+
+	G_OBJECT_CLASS(fidei_bibleinfo_row_parent_class)->dispose(object);
 }
 
 static void fidei_bibleinfo_row_class_init(FideiBibleInfoRowClass* class) {
