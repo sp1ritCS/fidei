@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Fidei - Take back your faith
+ Copyright (C) 2022 Florian "sp1rit" <sp1rit@national.shitposting.agency>
+ This file is distributed under the same license as Fidei and CC-BY-SA-4.0.
+-->
+
 <component type="desktop-application">
 	<id>arpa.sp1rit.Fidei</id>
 

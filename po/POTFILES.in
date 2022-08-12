@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 # Copyright (C) 2022 Florian "sp1rit" <sp1rit@national.shitposting.agency>
+# This file is distributed under the same license as Fidei.
 
 data/ui/about.ui
 data/ui/bible_items_empty.ui
