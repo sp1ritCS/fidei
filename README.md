@@ -10,10 +10,14 @@
 
 <h2></h2>
 
+<a href="https://build.opensuse.org/package/show/home:sp1rit:fidei:nightly/fidei" target="_blank">
+
 ![OBS package build status Tumbleweed](https://img.shields.io/obs/home:sp1rit:fidei:nightly/fidei/openSUSE_Tumbleweed/x86_64?label=Tumbleweed&logo=opensuse&style=for-the-badge)
 ![OBS package build status Arch](https://img.shields.io/obs/home:sp1rit:fidei:nightly/fidei/Arch/x86_64?label=Arch&logo=archlinux&style=for-the-badge)
 ![OBS package build status Debian](https://img.shields.io/obs/home:sp1rit:fidei:nightly/fidei/Debian_Testing/x86_64?label=Debian&logo=debian&style=for-the-badge)
 ![OBS package build status Fedora](https://img.shields.io/obs/home:sp1rit:fidei:nightly/fidei/Fedora_Rawhide/x86_64?label=Fedora&logo=fedora&style=for-the-badge)
+
+</a>
 
 ## Screenshots
 
