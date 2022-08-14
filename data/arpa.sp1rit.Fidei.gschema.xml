@@ -46,7 +46,8 @@
 		<key name="small-caps" type="a{ss}">
 			<default>{
 				"de": "HERRN?",
-				"en": "LORD"
+				"en": "LORD",
+				"la": "DOMIN(US|I|O|UM|E)"
 			}</default>
 			<summary>Strings that will be turned into small caps</summary>
 		</key>

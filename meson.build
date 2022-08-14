@@ -29,4 +29,6 @@ subdir('data')
 subdir('src')
 subdir('po')
 
+install_emptydir(get_option('datadir')/app_id, install_tag: 'runtime')
+
 meson.add_devenv(devenv)

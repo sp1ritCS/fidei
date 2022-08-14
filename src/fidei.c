@@ -319,7 +319,7 @@ static void open_gfile(FideiAppWindow* self, GFile* file) {
 #endif
 
 static void browser_btn_clicked(GtkButton*, FideiAppWindow* self) {
-	GFile* download_page = g_file_new_for_uri("https://bible4u.app/download.html");
+	GFile* download_page = g_file_new_for_uri("https://github.com/sp1ritCS/fidei/tree/master/doc/bibles/#repository");
 
 	open_gfile(self, download_page);
 

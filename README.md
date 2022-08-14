@@ -66,10 +66,7 @@ To exit out of the environment send an EOF to the shell (&lt;Ctrl&gt;D) or type 
 
 Optional dependencies are marked with \*
 
-## Bible file-format
+## Bibles
 
-Bible files are XML files in [Zefania](https://www.bgfdb.de/zefaniaxml/bml/) format. While not strictly required, the bible file needs to contain the `<INFORMATION>` tag and provide the `bsname` attribute in `<BIBLEBOOK>`s to work propertly.
-
-Fidei scans for bibles in `${XDG_DATA_HOME:-$HOME/.local/share}/arpa.sp1rit.Fidei` on app launch and makes them available in the bible picker (first view on first launch and later accesible in the menu).
-
-A good source for such bibles is [bible4u.app](https://bible4u.app/download.html).
+The file format, aswell as an repository of downloadable translations is defined
+in [doc/bibles/README.md](./doc/bibles/README.md). See it for further information.

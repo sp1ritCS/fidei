@@ -27,30 +27,23 @@
 #include <gtk/gtk.h>
 #include <adwaita.h>
 
-static GListStore* create_bible_list() {
-	GListStore* bibles = g_list_store_new(FIDEI_TYPE_BIBLE);
-
-	const gchar* datadir = g_get_user_data_dir();
-
-	GFile* bibledir = g_file_new_build_filename(datadir, "arpa.sp1rit.Fidei", NULL);
-
+static void add_dir_to_bible_list(GListStore* bibles, GFile* dir, gboolean create_dir) {
 	GError* err = NULL;
-	GFileEnumerator* files = g_file_enumerate_children(bibledir, "standard::*,owner::user", G_FILE_QUERY_INFO_NONE, NULL, &err);
+	GFileEnumerator* files = g_file_enumerate_children(dir, "standard::*,owner::user", G_FILE_QUERY_INFO_NONE, NULL, &err);
 	if (err) {
 		if (err->code == G_IO_ERROR_NOT_FOUND) {
-			GError* create_error = NULL;
-			if (!g_file_make_directory_with_parents(bibledir, NULL, &create_error)) {
-				g_critical(_t("Failure creating directory: %s\n"), create_error->message);
-				g_error_free(create_error);
-				return NULL;
+			if (create_dir) {
+				GError* create_error = NULL;
+				if (!g_file_make_directory_with_parents(dir, NULL, &create_error)) {
+					g_critical(_t("Failure creating directory: %s\n"), create_error->message);
+					g_error_free(create_error);
+				}
 			}
-			// create and push empty statemachine
-			goto out;
 		} else {
 			g_critical(_t("Failure opening directory: %s\n"), err->message);
-			g_error_free(err);
-			return NULL;
 		}
+		g_error_free(err);
+		return;
 	}
 
 	GFileInfo* file;
@@ -66,7 +59,7 @@ static GListStore* create_bible_list() {
 			break;
 
 
-		gchar* path = g_build_path("/", g_file_get_path(bibledir), g_file_info_get_name(file), NULL);
+		gchar* path = g_build_path("/", g_file_get_path(dir), g_file_info_get_name(file), NULL);
 		FideiBible* obj = fidei_bible_new(path);
 		g_free(path);
 		g_list_store_append(bibles, obj);
@@ -76,9 +69,23 @@ static GListStore* create_bible_list() {
 		g_object_unref(file);
 	} while (TRUE);
 
-out:
 	g_object_unref(files);
+}
+
+static GListStore* create_bible_list() {
+	GListStore* bibles = g_list_store_new(FIDEI_TYPE_BIBLE);
+
+	const gchar* datadir = g_get_user_data_dir();
+	GFile* bibledir = g_file_new_build_filename(datadir, "arpa.sp1rit.Fidei", NULL);
+	add_dir_to_bible_list(bibles, bibledir, TRUE);
 	g_object_unref(bibledir);
+
+	const gchar* const* datadirs = g_get_system_data_dirs();
+	for (guint i = 0; i < g_strv_length((gchar**)datadirs); i++) {
+		GFile* bibledir = g_file_new_build_filename(datadirs[i], "arpa.sp1rit.Fidei", NULL);
+		add_dir_to_bible_list(bibles, bibledir, FALSE);
+		g_object_unref(bibledir);
+	}
 
 	return bibles;
 }
