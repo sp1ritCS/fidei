@@ -1,5 +1,5 @@
 # Fidei - Take back your faith
-# Copyright (C) 2022 Florian "sp1rit" <sp1rit@national.shitposting.agency>
+# Copyright (C) 2022/23 Florian "sp1rit" <sp1rit@national.shitposting.agency>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
