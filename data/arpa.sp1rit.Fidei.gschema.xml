@@ -47,7 +47,8 @@
 			<default>{
 				"de": "HERRN?",
 				"en": "LORD",
-				"la": "DOMIN(US|I|O|UM|E)"
+				"la": "DOMIN(US|I|O|UM|E)",
+				"nl": "HEER"
 			}</default>
 			<summary>Strings that will be turned into small caps</summary>
 		</key>

@@ -1,0 +1,254 @@
+# Copyright (C) 2022 Florian "sp1rit" <sp1rit@national.shitposting.agency>
+# This file is distributed under the same license as Fidei.
+# Florian "sp1rit" <sp1rit@national.shitposting.agency>, 2022.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: arpa.sp1rit.Fidei 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-28 02:35+0200\n"
+"PO-Revision-Date: 2024-11-08 21:40+0100\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: data/ui/about.ui:6
+msgid "Take back your faith"
+msgstr "Ga weer geloven"
+
+#: data/ui/about.ui:7
+msgid "Copyright (c) 2022 Florian \"sp1rit\" and contributors"
+msgstr "Auteursrecht (c) 2022 Florian “sp1rit” en andere bijdragers"
+
+#: data/ui/bible_items_empty.ui:12
+msgid "No bibles found on your system"
+msgstr "Er zijn geen bijbels aangetroffen"
+
+#: data/ui/fidei.ui:6
+msgid "Switch bible"
+msgstr "Andere bijbel"
+
+#: data/ui/fidei.ui:12
+msgid "Preferences"
+msgstr "Voorkeuren"
+
+#: data/ui/fidei.ui:16
+msgid "About Fidei"
+msgstr "Over Fidei"
+
+#: data/ui/fidei.ui:78
+msgid "Download more"
+msgstr "Bijbels downloaden"
+
+#: data/ui/fidei.ui:88
+msgid "Open directory"
+msgstr "Map openen"
+
+#: data/ui/fidei.ui:274
+msgid "Welcome to Fidei!"
+msgstr "Welkom in Fidei!"
+
+#: data/ui/fidei.ui:275
+msgid "Pick a book from the sidebar on the left"
+msgstr "Kies in de zijbalk links een boek"
+
+#: data/ui/info.ui:22
+msgid "Title"
+msgstr "Titel"
+
+#: data/ui/info.ui:31
+msgid "Path"
+msgstr "Locatie"
+
+#: data/ui/info.ui:40
+msgid "Publisher"
+msgstr "Uitgever"
+
+#: data/ui/info.ui:49
+msgid "Language identifier"
+msgstr "Taalcode"
+
+#: data/ui/info.ui:58
+msgid "Unique identifier"
+msgstr "Unieke code"
+
+#: data/ui/info.ui:67
+msgid "Rights"
+msgstr "Rechten"
+
+#: data/ui/prefs.ui:6
+msgid "General"
+msgstr "Algemeen"
+
+#: data/ui/prefs.ui:11
+msgid "Content"
+msgstr "Inhoud"
+
+#: data/ui/prefs.ui:12
+msgid "Change the apperance of the content view"
+msgstr "Pas de vormgeving van de inhoud aan"
+
+#: data/ui/prefs.ui:15
+msgid "Display Headings/Captions"
+msgstr "Koppen en bijschriften tonen"
+
+#: data/ui/prefs.ui:16
+msgid "Note: this requires a compatible bible"
+msgstr "Let op: niet alle bijbels ondersteunen dit"
+
+#: data/ui/prefs.ui:26
+msgid "Font"
+msgstr "Lettertype"
+
+#: data/ui/prefs.ui:27
+msgid "Change font size and title"
+msgstr "Lettertype en -grootte aanpassen"
+
+#: data/ui/prefs.ui:46
+msgid "Presentation of »Lord«"
+msgstr "Weergave van »Heer«"
+
+#: data/ui/prefs.ui:51
+msgid "Small caps"
+msgstr "Kleine hoofdletters"
+
+#: data/ui/prefs.ui:52
+msgid "Configure string matches that will convert to small caps"
+msgstr ""
+"Geef aan welke woorden in kleine hoofdletters moeten worden getoond"
+
+#: data/arpa.sp1rit.Fidei.desktop:3 data/arpa.sp1rit.Fidei.metainfo.xml:5
+msgid "Fidei"
+msgstr "Fidei"
+
+#: data/arpa.sp1rit.Fidei.desktop:4
+msgid "Bible"
+msgstr "Bijbel"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/arpa.sp1rit.Fidei.desktop:13
+msgid "Bible;Luther;King James;"
+msgstr "Bijbel;Luther;King James;"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:6
+msgid "Bible reader"
+msgstr "Bijbellezer"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:8
+msgid ""
+"Fidei is an offline GTK bible reader for GNOME making use of modern "
+"technologies like libadwaita."
+msgstr ""
+"Fidei is een offline-bijbellezer voor GNOME, die gebruikmaakt van "
+"moderne technologieën als libadwaita."
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:9
+msgid "Features include:"
+msgstr "Kenmerken:"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:11
+msgid "Reads bibles with in Zefania XML format"
+msgstr "Lees bijbels in Zefania-xml-formaat;"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:12
+msgid "Caption/Heading support"
+msgstr "Ondersteuning voor koppen en bijschriften;"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:13
+msgid "Support for proper capitalization (small-caps) of »Lord«"
+msgstr "Ondersteuning voor het tonen van »Heer« in kleine hoofdletters."
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:16
+msgid "Florian \"sp1rit\""
+msgstr "Florian “sp1rit”"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:60
+msgid "The initial screen, showing available bibles on the system"
+msgstr "Het hoofdscherm met beschikbare bijbels"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:64
+msgid "Fidei in desktop mode, showing Mark 10"
+msgstr "Fidei in desktopmodus met Marcus 10 geopend"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:68
+msgid "Fidei in mobile mode, showing Genesis 3"
+msgstr "Fidei in mobiele modus met Genesis 3 geopend"
+
+#: data/arpa.sp1rit.Fidei.metainfo.xml:97
+msgid "Initial release"
+msgstr "Eerste versie"
+
+#: src/app.c:25
+#, c-format
+msgid "Failure creating directory: %s\n"
+msgstr "De map kan niet worden aangemaakt: %s\n"
+
+#: src/app.c:32
+#, c-format
+msgid "Failure opening directory: %s\n"
+msgstr "De map kan niet worden geopend: %s\n"
+
+#: src/app.c:43
+#, c-format
+msgid "Failure acessing file: %s\n"
+msgstr "Het bestand kan niet worden geopend: %s\n"
+
+#: src/bibleinfo_diag.c:118
+msgid "Copied to clipboard"
+msgstr "Gekopieerd naar het klembord"
+
+#: src/bibleinfo_diag.c:128
+msgid "Bible information"
+msgstr "Bijbelinformatie"
+
+#: src/bible.c:411
+#, c-format
+msgid "Invalid vref found on caption: %s\n"
+msgstr "Ongeldige vref aangetroffen in bijschrift: %s\n"
+
+#: src/fidei.c:213 src/fidei.c:229 src/fidei.c:271
+msgid "Failed opening external application"
+msgstr "De externe toepassing kan niet worden geopend"
+
+#: src/fidei.c:220 src/fidei.c:239
+#, c-format
+msgid "Failed creating XdgDesktopOpenURI proxy: %s\n"
+msgstr "De XdgDesktopOpenURI-proxy kan niet worden aangemaakt: %s\n"
+
+#: src/fidei.c:279
+#, c-format
+msgid "Failed querying launch application: %s\n"
+msgstr "Het openen van de toepassing kan niet worden bijgehouden: %s\n"
+
+#: src/fidei.c:294
+#, c-format
+msgid "Failed launching application: %s\n"
+msgstr "De toepassing kan niet worden geopend: %s\n"
+
+#: src/fidei.c:423
+msgid "Property bibles of Fidei.AppWindow can only be set once"
+msgstr ""
+"Eigenschappen van bijbels in Fidei.AppWindow kunnen slechts eenmaal "
+"worden ingesteld"
+
+#: src/preferences.c:163
+msgid "Add language"
+msgstr "Taal toevoegen"
+
+#: src/preferences.c:204
+msgid "Regular Expression"
+msgstr "Reguliere uitdrukking"
+
+#: src/preferences.c:217
+msgid "Remove language"
+msgstr "Taal verwijderen"
+
+#: src/preferences.c:249
+msgid "Property settings of Fidei.Preferences can only be set once"
+msgstr ""
+"Eigenschappen van instellingen van Fidei.Preferences kunnen slechts "
+"eenmaal worden ingesteld"
