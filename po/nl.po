@@ -1,4 +1,3 @@
-# FIDEI GETTEXT TRANSLATION TEMPLATE.
 # Copyright (C) 2022 Florian "sp1rit" <sp1rit@national.shitposting.agency>
 # This file is distributed under the same license as Fidei.
 # Florian "sp1rit" <sp1rit@national.shitposting.agency>, 2022.
