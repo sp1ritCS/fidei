@@ -43,8 +43,7 @@ if get_option('sandboxed')
 	add_project_arguments(['-DFIDEI_USE_PORTALS'], language: 'c')
 endif
 
-libicu = dependency('icu-uc', required: get_option('libicu'))
-if libicu.found()
+if icu_dep.found()
 	add_project_arguments(['-DHAS_LIBICU'], language: 'c')
 endif
 
@@ -55,10 +54,10 @@ fidei = executable('fidei', src, fidei_res,
 		'-DPACKAGE_LOCALE_DIR="@0@"'.format(join_paths(get_option('prefix'), get_option('localedir'))),
 	],
 	dependencies: [
-		dependency('gtk4'),
-		dependency('libadwaita-1'),
-		dependency('libxml-2.0'),
-		libicu
+		gtk_dep,
+		adw_dep,
+		xml_dep,
+		icu_dep
 	],
 	export_dynamic: true,
 	install : true
