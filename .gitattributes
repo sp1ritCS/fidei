@@ -1,3 +1,0 @@
-screenshots/desktop.png filter=lfs diff=lfs merge=lfs -text
-screenshots/init-picker.png filter=lfs diff=lfs merge=lfs -text
-screenshots/mobile.png filter=lfs diff=lfs merge=lfs -text
