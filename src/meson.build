@@ -30,19 +30,6 @@ src = [
 ]
 deps = []
 
-if get_option('sandboxed')
-	openurl = gnome.gdbus_codegen('xdg_openurl', get_option('xdp_openuri_location'),
-		interface_prefix: 'org.freedesktop.portal.',
-		namespace: 'XdgDesktop',
-		object_manager: true
-	)
-
-	src += openurl
-	deps += dependency('gio-unix-2.0')
-
-	add_project_arguments(['-DFIDEI_USE_PORTALS'], language: 'c')
-endif
-
 if icu_dep.found()
 	add_project_arguments(['-DHAS_LIBICU'], language: 'c')
 endif

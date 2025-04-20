@@ -23,7 +23,7 @@ app_id = 'arpa.sp1rit.Fidei'
 
 i18n = import('i18n')
 
-gtk_dep = dependency('gtk4')
+gtk_dep = dependency('gtk4', version: '>= 4.10.0')
 adw_dep = dependency('libadwaita-1', version: '>= 1.2.0')
 xml_dep = dependency('libxml-2.0')
 icu_dep = dependency('icu-uc', required: get_option('libicu'))

@@ -13,8 +13,6 @@ finish-args:
 modules:
   - name: fidei
     buildsystem: meson
-    config-opts:
-      - -Dsandboxed=true
     sources:
       - type: dir
         path: ../../
